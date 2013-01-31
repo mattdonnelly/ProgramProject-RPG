@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 
@@ -13,6 +12,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private SurfaceHolder surfaceHolder;
 	private GameThread gameThread;
+	private FPSTracker fpsTracker;
 	
 	public GameView(Context context) {
 		super(context);
@@ -23,6 +23,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		surfaceHolder = getHolder();
 		surfaceHolder.addCallback(this);
 		gameThread = new GameThread(surfaceHolder);
+		
+		fpsTracker = new FPSTracker();
 	}
 
 	@Override
@@ -39,8 +41,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		while (retry) {
 			try {
 				gameThread.join();
+				retry = false;
 			} catch (InterruptedException e) {
-				retry = true;
+				
 			}
 		}
 	}
@@ -60,11 +63,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		private static final int MAX_FPS = 50;
 		private static final int CYCLE_TIME = 1000 / MAX_FPS;
 		private static final int MAX_FRAME_SKIPS = 5;
-		
-		private int fps;
-		
-		private int width;
-		private int height;
+				
+		private int width = 0;
+		private int height = 0;
 		
 		public GameThread(SurfaceHolder surfaceHolder) {
 			this.surfaceHolder = surfaceHolder;
@@ -90,7 +91,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 					paint.setColor(Color.WHITE); 
 					paint.setStyle(Style.FILL); 
 					paint.setTextSize(20); 
-					canvas.drawText("FPS: " + fps, width - 90, 40, paint);
+					canvas.drawText("FPS: " + fpsTracker.getFPS(), width - 90, 40, paint);
 				}
 			} finally {
                 if (canvas != null){
@@ -102,8 +103,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		@Override
 		public void run() {
 			long beginTime = 0, currentTime = 0, timeDifference = 0, sleepTime = 0;
-			long lastSecond = System.currentTimeMillis();
-			int ticks = 0, framesSkipped = 0;
+			int framesSkipped = 0;
+			
+			fpsTracker.start();
 			
 			while (running) {
 				synchronized (this) {
@@ -122,14 +124,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 				update();
 				render();
 				
-				ticks++;
-				
-				currentTime = System.currentTimeMillis();
-				if (currentTime - lastSecond >= 1000) {
-					fps = ticks;
-					ticks = 0;
-					lastSecond = currentTime;
-				}
+				fpsTracker.tick();
 			
 				timeDifference = beginTime - currentTime;
 				sleepTime = CYCLE_TIME - timeDifference;
@@ -147,7 +142,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 					sleepTime += CYCLE_TIME;	
 					framesSkipped++;
 				}
-
 			}
 		}
 				
