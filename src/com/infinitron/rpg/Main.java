@@ -10,6 +10,22 @@ public class Main extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(new Game(this));
+        setContentView(new GameView(this));
     }
+    
+    @Override
+    protected void onPause()  { 
+    	super.onPause(); 
+    	finish();
+    }
+    
+    @Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+	}
 }
