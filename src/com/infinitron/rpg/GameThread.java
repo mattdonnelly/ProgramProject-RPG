@@ -12,7 +12,7 @@ public class GameThread extends Thread {
 	private Game game;
 	
 	
-	private Renderer renderer;
+	private GameRenderer renderer;
 	
 	private boolean running;
 	private boolean paused;
@@ -26,7 +26,7 @@ public class GameThread extends Thread {
 	
 	private Paint fpsPaint;
 	
-	public GameThread(Game game, Renderer renderer) {
+	public GameThread(Game game, GameRenderer renderer) {
 		this.game = game;
 		this.surfaceHolder = game.getHolder();
 		

@@ -12,7 +12,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
 	private SurfaceHolder surfaceHolder;
 	private GameThread gameThread;
-	private Renderer renderer;
+	private GameRenderer renderer;
 	
 	public Game(Context context) {
 		super(context);
@@ -24,7 +24,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		surfaceHolder.addCallback(this);
 		setFocusable(true);
 		
-		renderer = new Renderer();
+		renderer = new GameRenderer();
 		gameThread = new GameThread(this, renderer);
 	}
 

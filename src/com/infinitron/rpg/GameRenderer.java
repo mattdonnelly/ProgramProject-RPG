@@ -4,10 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import java.util.ArrayList;
 
-public class Renderer {
+public class GameRenderer {
 	private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 	
-	public Renderer() {
+	public GameRenderer() {
 		
 	}
 
