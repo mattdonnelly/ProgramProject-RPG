@@ -2,7 +2,7 @@ package com.infinitron.rpg;
 
 import android.graphics.Canvas;
 
-public class Renderable {
+public class GameObject {
 
 	public void draw(Canvas canvas) {
 		

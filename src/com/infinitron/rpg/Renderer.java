@@ -5,31 +5,31 @@ import android.graphics.Color;
 import java.util.ArrayList;
 
 public class Renderer {
-	private ArrayList<Renderable> renderables = new ArrayList<Renderable>();
+	private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 	
 	public Renderer() {
 		
 	}
 
-    public void setRenderables(ArrayList<Renderable> renderables) {
-    	this.renderables = renderables;
+    public void setRenderables(ArrayList<GameObject> renderables) {
+    	this.gameObjects = renderables;
     }
 
-    public void addRenderable(Renderable r) {
-    	synchronized(renderables){
-		    renderables.add(r);
+    public void addRenderable(GameObject r) {
+    	synchronized(gameObjects){
+		    gameObjects.add(r);
 	    }
     }
 
     public void removeRenderable(int location){
-	    synchronized(renderables){
-		    renderables.remove(location);
+	    synchronized(gameObjects){
+		    gameObjects.remove(location);
 	    }
     }
 
-    public void removeRenderable(Renderable r){
-	    synchronized(renderables){
-		    renderables.remove(r);
+    public void removeRenderable(GameObject r){
+	    synchronized(gameObjects){
+		    gameObjects.remove(r);
 	    }
     }
 
@@ -37,8 +37,8 @@ public class Renderer {
 
 	    canvas.drawColor(Color.MAGENTA);
 	    
-	    synchronized(renderables){
-		    for (Renderable r : renderables) {
+	    synchronized(gameObjects){
+		    for (GameObject r : gameObjects) {
 			   // r.update();
 			    r.draw(canvas);
 		    }
