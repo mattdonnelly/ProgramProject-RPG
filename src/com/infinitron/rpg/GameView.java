@@ -23,6 +23,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	public void init() {
 		surfaceHolder = getHolder();
 		surfaceHolder.addCallback(this);
+		setFocusable(true);
 		
 		renderer = new Renderer();
 		gameThread = new GameThread(this, renderer);
@@ -58,6 +59,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	
 	public void update() {
 		
+	}
+	
+	public void render(Canvas canvas) {
+		canvas.drawColor(Color.MAGENTA);
 	}
 	
 	public class GameThread extends Thread {
@@ -109,28 +114,29 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			fpsTracker.start();
 
 			while (running) {				
-				synchronized (this) {
-				    while (paused) {
-				        try {
-				           wait();
-				        } catch (InterruptedException e) {
-				        
-				        }
-				    }
-				}
+				while (paused) {
+					synchronized (this) {
+						try {
+							wait();
+						} catch (InterruptedException e) {
+					    
+						}
+					}
+			    }
 				
 				currentTime = System.currentTimeMillis();
 				framesSkipped = 0;
 				
-				synchronized (this) {	
-					canvas = surfaceHolder.lockCanvas();
-					
+				try {
+					canvas = surfaceHolder.lockCanvas(null);
+					synchronized (surfaceHolder) {
+						gameView.update();
+						gameView.render(canvas);
+						drawFPS(canvas);
+					}
+				} finally {
 					if (canvas != null) {
-                        gameView.update();
-                        renderer.drawFrame(canvas);
-                        drawFPS(canvas);
-                        
-                        surfaceHolder.unlockCanvasAndPost(canvas);	
+						surfaceHolder.unlockCanvasAndPost(canvas);
 					}
 				}
 				
