@@ -11,6 +11,7 @@ public class GameThread extends Thread {
 	private SurfaceHolder surfaceHolder;
 	private Game game;
 	
+	private FPSTracker fpsTracker;
 	
 	private GameRenderer renderer;
 	
@@ -18,7 +19,7 @@ public class GameThread extends Thread {
 	private boolean paused;
 	
 	private static final int MAX_FPS = 60;
-	private static final int CYCLE_TIME = 1000 / MAX_FPS;
+	private static final int CYCLE_TIME = 1000 / MAX_FPS; // the amount of frames that can be fit in to a second at MAX_FPS
 	private static final int MAX_FRAME_SKIPS = 5;
 			
 	private int width = 0;
@@ -32,6 +33,8 @@ public class GameThread extends Thread {
 		
 		this.renderer = renderer;
 		
+		this.fpsTracker = new FPSTracker();
+		
 		paused = false;
 		
 		fpsPaint = new Paint(); 
@@ -39,18 +42,24 @@ public class GameThread extends Thread {
 		fpsPaint.setStyle(Style.FILL); 
 		fpsPaint.setTextSize(20); 
 	}
-
+	
+	
+	public void drawFPS(Canvas canvas) {
+		canvas.drawText("FPS: " + fpsTracker.getFPS(), width - 90, 40, fpsPaint);
+	}
 	
 	@Override
 	public void run() {
 		Canvas canvas = null;
 
-		long currentTime = 0;
-		long timeDifference = 0;
 		int sleepTime = 0;
 		int framesSkipped = 0;
 		
-		while (running) {				
+		fpsTracker.start();
+		
+		while (running) {	
+			
+			// wait to start drawing again if paused
 			while (paused) {
 				synchronized (this) {
 					try {
@@ -61,14 +70,16 @@ public class GameThread extends Thread {
 				}
 		    }
 			
-			currentTime = System.currentTimeMillis();
+			final long currentTime = System.currentTimeMillis();
 			framesSkipped = 0;
 			
 			try {
 				canvas = surfaceHolder.lockCanvas(null);
 				synchronized (surfaceHolder) {
+					// Update and Render
 					game.update();
 					renderer.drawFrame(canvas);
+					drawFPS(canvas);
 				}
 			} finally {
 				if (canvas != null) {
@@ -76,9 +87,11 @@ public class GameThread extends Thread {
 				}
 			}
 						
-			timeDifference = System.currentTimeMillis() - currentTime;
+			final long timeDifference = System.currentTimeMillis() - currentTime;
 			sleepTime = (int)(CYCLE_TIME - timeDifference);
-
+			
+			/* Game is running faster than 60 fps so we send the thread to sleep to cap it at 60 fps
+			   and save some battery */
 			if (sleepTime > 0) {
 				try {
 					Thread.sleep(sleepTime);
@@ -86,12 +99,15 @@ public class GameThread extends Thread {
 					
 				}
 			}
-
+			
+			// Game is running slower than 60 FPS so we need to skip some frames to catch up
 			while (sleepTime < 0 && framesSkipped < MAX_FRAME_SKIPS) {
 				game.update();
 				sleepTime += CYCLE_TIME;
 				framesSkipped++;
 			}
+			
+			fpsTracker.tick();
 		}
 	}
 			
