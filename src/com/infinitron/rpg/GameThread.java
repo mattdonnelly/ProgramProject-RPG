@@ -12,7 +12,7 @@ public class GameThread extends Thread {
 	private Game game;
 	
 	private FPSTracker fpsTracker;
-	
+	private Level level;
 	private GameRenderer renderer;
 	
 	private boolean running;
@@ -33,6 +33,7 @@ public class GameThread extends Thread {
 		
 		this.renderer = renderer;
 		
+		this.level = new Level("/path", 0, 0);
 		this.fpsTracker = new FPSTracker();
 		
 		paused = false;
@@ -78,6 +79,10 @@ public class GameThread extends Thread {
 				synchronized (surfaceHolder) {
 					// Update and Render
 					game.update();
+					
+					canvas.drawColor(Color.MAGENTA); // clear screen
+					
+					level.drawLevel(canvas);
 					renderer.drawFrame(canvas);
 					drawFPS(canvas);
 				}
