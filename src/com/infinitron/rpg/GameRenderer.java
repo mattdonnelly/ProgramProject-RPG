@@ -34,11 +34,11 @@ public class GameRenderer {
     }
 
     public void drawFrame(Canvas canvas) {
+	    canvas.drawColor(Color.MAGENTA);
 	    
 	    synchronized(gameObjects){
-		    for (GameObject r : gameObjects) {
-			   // r.update();
-			    r.draw(canvas);
+		    for (GameObject object : gameObjects) {
+		    	object.draw(canvas);
 		    }
 	    }
 

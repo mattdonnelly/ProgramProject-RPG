@@ -1,16 +1,16 @@
 package com.infinitron.rpg;
 
+import android.graphics.Bitmap;
+
 public class Sprite {
 
-	public final int SIZE;
+	private Bitmap bitmap;
 	
-	public Sprite(int size) {
-		SIZE = size;
-		load();
+	public Sprite(SpriteSheet spriteSheet, int index) {
+		this.bitmap = spriteSheet.cut(index);
 	}
 	
-	private void load() {
-		
+	public Bitmap getImage() {
+		return this.bitmap;
 	}
-	
 }

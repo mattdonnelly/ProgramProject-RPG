@@ -1,10 +1,7 @@
 package com.infinitron.rpg;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
+import android.graphics.BitmapFactory;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 
@@ -13,6 +10,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	private SurfaceHolder surfaceHolder;
 	private GameThread gameThread;
 	private GameRenderer renderer;
+	
+	// TESTING SPRITE RENDERING
+	public SpriteSheet elaine = new SpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.walk_elaine), 30, 47);
+	public Sprite elaineSprite = new Sprite(elaine, 2);
+	public GameObject elaineObject = new GameObject(elaineSprite, 20, 20);
+	
+	public int fps = 0;
 	
 	public Game(Context context) {
 		super(context);
@@ -25,6 +29,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		setFocusable(true);
 		
 		renderer = new GameRenderer();
+		renderer.addRenderable(elaineObject);
+		
 		gameThread = new GameThread(this, renderer);
 	}
 
