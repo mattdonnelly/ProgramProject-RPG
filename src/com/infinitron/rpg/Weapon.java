@@ -7,5 +7,4 @@ public class Weapon extends GameObject{
 		super(_name, _sprite, _xPos, _yPos);
 		damage = _damage;
 	}
-	
 }
