@@ -1,7 +1,7 @@
 package com.infinitron.rpg;
 
 public class Item extends GameObject{
-	int level;
+	private int level;
 	int state;
 	int type;
 	

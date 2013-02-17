@@ -1,7 +1,7 @@
 package com.infinitron.rpg;
 
 public class Player extends GameObject{
-	private int max_hp;
+	private final int max_hp;
 	private int hp;
 	private Item[] inventory;
 	
@@ -34,5 +34,28 @@ public class Player extends GameObject{
 	
 	public void heal(){
 		
+	}
+
+	// getters and setters
+	public int getMax_hp(){
+		return max_hp;
+	}
+	
+	public int getHP(){
+		return hp;
+	}
+	
+	public void setHP(int _hp){
+		hp = _hp;
+	}
+
+	public Item[] getInventory(){
+		return inventory;
+	}
+	
+	public void setInventory(Item[] _inventory){
+		for(int i = 0; i < inventory.length; i++){
+			inventory[i] = _inventory[i];
+		}
 	}
 }
