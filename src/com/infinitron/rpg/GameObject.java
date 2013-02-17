@@ -12,11 +12,11 @@ public class GameObject {
 	Monster[] monsterCollection = new Monster[10];
 	Item[][] itemCollection = new Item[3][10];
 	
-	public GameObject(String name, Sprite sprite, int x, int y) {
-		this.name = name;
-		this.sprite = sprite;
-		this.x = x;
-		this.y = y;
+	public GameObject(String _name, Sprite _sprite, int _x, int _y) {
+		this.name = _name;
+		this.sprite = _sprite;
+		this.x = _x;
+		this.y = _y;
 	}
 
 	public void draw(Canvas canvas) {
