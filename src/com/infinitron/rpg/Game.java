@@ -14,7 +14,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	// TESTING SPRITE RENDERING
 	public SpriteSheet elaine = new SpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.walk_elaine), 30, 47);
 	public Sprite elaineSprite = new Sprite(elaine, 2);
-	public GameObject elaineObject = new GameObject(elaineSprite, 20, 20);
+	public GameObject elaineObject = new GameObject("Elaine", elaineSprite, 20, 20);
 	
 	public int fps = 0;
 	
