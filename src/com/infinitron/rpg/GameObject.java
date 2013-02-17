@@ -9,7 +9,7 @@ public class GameObject {
 	protected Sprite sprite;
 	
 	Monster[] monsterCollection = new Monster[10];
-	//Item[][] itemCollection = new Item[3][10];
+	Item[][] itemCollection = new Item[3][10];
 	
 	public GameObject(String name, Sprite sprite, int x, int y) {
 		this.name = name;
