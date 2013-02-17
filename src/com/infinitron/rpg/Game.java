@@ -16,6 +16,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	public Sprite elaineSprite = new Sprite(elaine, 2);
 	public GameObject elaineObject = new GameObject("Elaine", elaineSprite, 20, 20);
 	
+	Monster[] monsterCollection = new Monster[10];
+	Item[][] itemCollection = new Item[3][10];
+	
 	public int fps = 0;
 	
 	public Game(Context context) {
@@ -62,5 +65,28 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	
 	public void update() {
 		
+	}
+	
+	// 1d array full of monster objects 
+	public void createMonsters(Sprite sprite){
+		for(int i = 0; i < monsterCollection.length; i++){
+			monsterCollection[i] = new Monster("The Thing", sprite, 0, 0, 0, 0, 0, 0);
+		}
+	}
+	
+	// 2d array of items, where the each row is a different type of item and the each column represents a different object of type item where the greater
+	// the column index the greater the item level
+	public void createItems(){
+		for(int j = 0; j < itemCollection.length; j++){
+			for(int i = 0; i < itemCollection[j].length; i++){
+				if(j == 0){
+					//itemCollection[j][i] = new Weapon();
+				}else if(j == 1){
+					//itemCollection[j][i] = new Armor();
+				}else if(j == 2){
+					//itemCollection[j][i] = new Potion();
+				}
+			}
+		}
 	}
 }
