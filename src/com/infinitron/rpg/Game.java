@@ -12,7 +12,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	private GameRenderer renderer;
 	
 	// TESTING SPRITE RENDERING
-	public SpriteSheet elaine = new SpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.walk_elaine), 30, 47);
+	public GridSpriteSheet elaine = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.walk_elaine), 30, 47);
 	public Sprite elaineSprite = new Sprite(elaine, 2);
 	public GameObject elaineObject = new GameObject(elaineSprite, 20, 20);
 	

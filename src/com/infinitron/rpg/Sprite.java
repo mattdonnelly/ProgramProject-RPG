@@ -6,7 +6,7 @@ public class Sprite {
 
 	private Bitmap bitmap;
 	
-	public Sprite(SpriteSheet spriteSheet, int index) {
+	public Sprite(GridSpriteSheet spriteSheet, int index) {
 		this.bitmap = spriteSheet.cut(index);
 	}
 	

@@ -3,38 +3,22 @@ package com.infinitron.rpg;
 import android.graphics.Bitmap;
 
 public class SpriteSheet {
+
+	protected Bitmap sheet;
 	
-	private Bitmap sheet;
-	private int tileWidth;
-	private int tileHeight;
-	private int size;
-	private int rows;
-	private int columns;
-	
-	public SpriteSheet(Bitmap sheet, int tileWidth, int tileHeight) {
+	public SpriteSheet(Bitmap sheet) {
 		this.sheet = sheet;
-		this.tileWidth = tileWidth;
-		this.tileHeight = tileHeight;
-		this.columns = sheet.getWidth() / tileWidth;
-		this.rows = sheet.getHeight() / tileHeight;
-		this.size = columns * rows;
 	}
 	
-	public Bitmap cut(int index) {
-		int selectedColumn = 0;
-		if (this.columns != 0)
-			selectedColumn = index % this.columns;
-		
-		int selectedRow = 0;
-		if (this.rows != 0)
-			selectedRow = (index - selectedColumn) / this.rows;
-						
-		Bitmap cutBitmap = Bitmap.createBitmap(this.sheet, selectedColumn * tileWidth, selectedRow * tileHeight, this.tileWidth, this.tileHeight);
-		
-		return cutBitmap;
+	public Bitmap cut(int xpos, int ypos, int width, int height) {		
+		return Bitmap.createBitmap(this.sheet, xpos, ypos, width, height);
 	}
 	
-	public int size() {
-		return this.size;
+	public int getWidth() {
+		return this.sheet.getWidth();
+	}
+	
+	public int getHeight() {
+		return this.sheet.getHeight();
 	}
 }
