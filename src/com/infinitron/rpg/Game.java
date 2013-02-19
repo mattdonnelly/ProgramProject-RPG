@@ -1,6 +1,7 @@
 package com.infinitron.rpg;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
@@ -15,6 +16,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	public GridSpriteSheet elaine = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.walk_elaine), 30, 47);
 	public Sprite elaineSprite = new Sprite(elaine, 2);
 	public GameObject elaineObject = new GameObject("Elaine", elaineSprite, 20, 20);
+	
+	public Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map);
+	public GridSpriteSheet map_tilesheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.map_tilesheet), 16, 16); 
+	public Level level = new Level(map, map_tilesheet, 60, 60);
 	
 	Monster[] monsterCollection = new Monster[10];
 	Item[][] itemCollection = new Item[3][10];
@@ -34,7 +39,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		renderer = new GameRenderer();
 		renderer.addRenderable(elaineObject);
 		
-		gameThread = new GameThread(this, renderer);
+		gameThread = new GameThread(this, renderer, level);
 	}
 
 	@Override

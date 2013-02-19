@@ -31,8 +31,8 @@ public class GridSpriteSheet extends SpriteSheet {
 		return Bitmap.createBitmap(this.sheet, selectedColumn * tileWidth, selectedRow * tileHeight, this.tileWidth, this.tileHeight);
 	}
 	
-	public Bitmap cut(int row, int col) {		
-		return Bitmap.createBitmap(this.sheet, col, row, this.tileWidth, this.tileHeight);
+	public Bitmap cut(int row, int col) {
+		return Bitmap.createBitmap(sheet, col * tileWidth, row * tileHeight, tileWidth, tileHeight);
 	}
 	
 	public int size() {
