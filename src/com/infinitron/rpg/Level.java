@@ -10,6 +10,8 @@ import android.view.SurfaceView;
 
 public class Level {
 	
+	public static final int TILE_SIZE = 16;
+	
 	private Bitmap map;
 	private int width;
 	private int height;
@@ -38,7 +40,7 @@ public class Level {
 			for (int x = 0; x < width; x++) {
 				
 				pixel = bitmap.getPixel(x, y);
-				Log.d("Level", y + ", " + x + ": " + Integer.toHexString(pixel));
+				//Log.d("Level", y + ", " + x + ": " + Integer.toHexString(pixel));
 				
 				// find tile by pixel colour
 				if (pixel == grass_col)				tiles[y][x] = new Tile(new Sprite(tilesheet, 0, 0), 16, false);
@@ -52,11 +54,15 @@ public class Level {
 		}
 	}
 	
-	public void drawLevel(Canvas canvas) {
+	/* draw the level tiles from a top-left position to the side of the canvas */
+	public void drawLevel(Canvas canvas, int y_offset, int x_offset) {
 
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				tiles[i][j].draw(canvas, i, j);
+		int no_of_tiles_wide = canvas.getWidth() / TILE_SIZE;
+		int no_of_tiles_high = canvas.getHeight() / TILE_SIZE;
+		
+		for (int i = 0; i < no_of_tiles_high; i++) {
+			for (int j = 0; j < no_of_tiles_wide; j++) {
+				tiles[y_offset + i][x_offset + j].draw(canvas, i, j);
 			}
 		}
 		    
