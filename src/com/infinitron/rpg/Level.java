@@ -19,10 +19,10 @@ public class Level {
 	
 	// RGB values to find tiles types from map image
 	public int grass_col = 0xff00ff00;
-	public int path_col = 0xff848284;
+	public int path_col = 0xff808080;
 	public int flower_col = 0xffffff00;
-	public int dark_grass_col = 0xff009a00;
-	public int tree_col = 0xffff9a00;
+	public int dark_grass_col = 0xff009900;
+	public int tree_col = 0xffff9900;
 	
 	public Level (Bitmap map, GridSpriteSheet tilesheet, int width, int height) {
 		assert(width == map.getWidth() && height == map.getHeight()); // asserts correct quality res was used
