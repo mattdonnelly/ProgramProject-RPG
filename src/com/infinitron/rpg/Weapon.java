@@ -7,4 +7,7 @@ public class Weapon extends Item{
 		super(_name, _sprite, _xPos, _yPos, _level, _state, _type);
 		damage = _damage;
 	}
+	public int getDamage(){
+		return damage;
+	}
 }

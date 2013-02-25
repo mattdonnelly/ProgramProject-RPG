@@ -22,6 +22,13 @@ public class GameObject {
 	public void loadImage(){
 		
 	}
+	public int getXPos(){
+		return x;
+	}
+	public int getYPos(){
+		return y;
+	}
+	
 	
 	public void update(){
 		
