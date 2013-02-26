@@ -12,6 +12,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	private GameThread gameThread;
 	private GameRenderer renderer;
 	
+	
 	// TESTING SPRITE RENDERING
 	//Player sprite rendering
 	public GridSpriteSheet elaine = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.walk_elaine), 30, 47);
@@ -118,5 +119,39 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		itemCollection[2][0] = new Armor("Minor Potion",	itemSprites[2][0],	itemCollection[2][0].getXPos(),	itemCollection[1][0].getYPos(),	1,		0,		3,	10);
 		itemCollection[2][1] = new Armor("Small Potion",	itemSprites[2][1],	itemCollection[2][1].getXPos(),	itemCollection[1][1].getYPos(),	3,		0,		3,	30);
 		itemCollection[2][2] = new Armor("Medium Potion",	itemSprites[2][2],	itemCollection[2][2].getXPos(),	itemCollection[1][2].getYPos(),	5,		0,		3,	50);
+	}
+	//A method which takes two integers, one defining the highest point in the monster array needed and the other the lowest
+	//The function then creates a new array containing all the monsters within this range and returns it
+	/********************************************************************
+	NEEDS TESTING
+	*******************************************************************/
+	public Monster[] getMonsterRange(int max, int min){
+		int i,j = 0;
+		Monster[] result = new Monster[max - min];
+		for(i = min; i <= result.length;i++){
+			result[j++] = monsterCollection[i];
+		}
+		return result;
+	
+	}
+	//A method which returns an array of items which can consist of weapons,armor,potions or all
+	//As parameters it takes four integers. 
+	//The first integer specifies the lowest row to select in the item array, while the second integer specifies largest row to select
+	//The third integer specifies the lowest column to select in the item array, while the fourth integer specifies largest column to select
+	/********************************************************************
+	NEEDS TESTING
+	*******************************************************************/
+	public Item[][] getItemRange(int rowsMin, int rowsMax, int columnsMin, int columnsMax){
+		int i, j, k = 0, h = 0;
+		int rowIndex = rowsMax-rowsMin;
+		int columnIndex = columnsMax - columnsMin;
+		Item[][] result = new Item[rowIndex][columnIndex];
+		for(i = rowsMin; i <= rowIndex; i++){
+			result[k++][h] = itemCollection[i][0];
+			for(j = 0; j <= columnsMax-columnsMin;j++){
+				result[k][h++] = itemCollection[i][j];
+			}
+		}
+		return result;
 	}
 }
