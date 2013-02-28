@@ -12,9 +12,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	private GameThread gameThread;
 	private GameRenderer renderer;
 	
+	/* TESTING SPRITE RENDERING */
 	
-	// TESTING SPRITE RENDERING
-	//Player sprite rendering
+	// Test sprite rendering
 	public GridSpriteSheet elaine = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.walk_elaine), 30, 47);
 	public Sprite elaineSprite = new Sprite(elaine, 2);
 	public GameObject elaineObject = new GameObject("Elaine", elaineSprite, 20, 20);
@@ -24,6 +24,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	public Sprite monster1Sprite = new Sprite(monster1, 2);
 	public GameObject monster1Object = new GameObject("Monster1", monster1Sprite, 110, 50);
 	
+	// Animated Game Object Test
+	public Sprite[] animatedElaineSprites = {new Sprite(elaine, 0), new Sprite(elaine, 1), new Sprite(elaine, 2), new Sprite(elaine, 3), new Sprite(elaine, 4)};
+	public AnimatedGameObject animatedElaineObject = new AnimatedGameObject("Elaine", animatedElaineSprites, 70, 70, 100, GameThread.CYCLE_TIME);
+	
 	public Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map);
 	public GridSpriteSheet map_tilesheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.map_tilesheet), 16, 16); 
 	public Level level = new Level(map, map_tilesheet, 60, 60);
@@ -31,7 +35,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	Monster[] monsterCollection = new Monster[10];//Would then call createMonsters to fill array
 	Item[][] itemCollection = new Item[3][10];//Would then call createItems to fill array
 	
-	public int fps = 0;
+	protected int fps = 0;
 	
 	public Game(Context context) {
 		super(context);
@@ -46,6 +50,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		renderer = new GameRenderer();
 		renderer.addRenderable(elaineObject);
 		renderer.addRenderable(monster1Object);
+		renderer.addRenderable(animatedElaineObject);
 		
 		gameThread = new GameThread(this, renderer, level);
 	}
@@ -77,7 +82,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	}
 	
 	public void update() {
-		
+		animatedElaineObject.update();
 	}
 	
 	// 1d array full of monster objects 

@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class GameThread extends Thread {
@@ -17,9 +18,9 @@ public class GameThread extends Thread {
 	private boolean running;
 	private boolean paused;
 	
-	private final static int MAX_FPS = 50;	
+	public final static int MAX_FPS = 50;	
 	private final static int MAX_FRAME_SKIPS = 5;	
-	private final static int CYCLE_TIME = 1000 / MAX_FPS;
+	public final static int CYCLE_TIME = 1000 / MAX_FPS;
 
 	private final static int STAT_INTERVAL = 1000; //ms
 	private long statusIntervalTimer = 0l;
@@ -82,11 +83,12 @@ public class GameThread extends Thread {
 			    	canvas.scale(2.0f, 2.0f);
 					
 					final long beginTime = System.currentTimeMillis();
+										
 					framesSkipped = 0;
 					
 					this.game.update();
 					canvas.drawColor(Color.MAGENTA);
-					this.level.drawLevel(canvas, 5, 5);
+					//this.level.drawLevel(canvas, 5, 5);
 					this.renderer.drawFrame(canvas);
 					this.drawFPS(canvas);
 					
@@ -112,7 +114,7 @@ public class GameThread extends Thread {
 					
 					ticks++;
 					statusIntervalTimer += CYCLE_TIME;
-					
+										
 					// calculate fps
 					if (statusIntervalTimer >= STAT_INTERVAL) {
 						game.fps = ticks / (STAT_INTERVAL / 1000);
