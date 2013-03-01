@@ -127,13 +127,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	}
 	//A method which takes two integers, one defining the highest point in the monster array needed and the other the lowest
 	//The function then creates a new array containing all the monsters within this range and returns it
-	/********************************************************************
-	NEEDS TESTING
-	*******************************************************************/
+	//Example: max = 8,min = 4, result will contain 5 values, the value at index 4,5,6,7,8 of monsterCollection 
 	public Monster[] getMonsterRange(int max, int min){
 		int i,j = 0;
-		Monster[] result = new Monster[max - min];
-		for(i = min; i <= result.length;i++){
+		Monster[] result = new Monster[(max - min) + 1];
+		for(i = min; i <= max;i++){
 			result[j++] = monsterCollection[i];
 		}
 		return result;
@@ -143,19 +141,22 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	//As parameters it takes four integers. 
 	//The first integer specifies the lowest row to select in the item array, while the second integer specifies largest row to select
 	//The third integer specifies the lowest column to select in the item array, while the fourth integer specifies largest column to select
-	/********************************************************************
-	NEEDS TESTING
-	*******************************************************************/
-	public Item[][] getItemRange(int rowsMin, int rowsMax, int columnsMin, int columnsMax){
+	//Example: 4x4 array with (0,0) being 0, (0,1) being 1...... and (3,3) being 15 rowMax = 3,rowMin = 1,colMax = 3,colMin = 1 
+	// 0	1	2	3
+	// 4	5	6	7     -->	5	6	7
+	// 8	9	10	11			9	10	11
+	// 12	13	14	15			13	14	15
+	public Item[][] getItemRange(int rowMin, int rowMax, int colMin, int colMax){
 		int i, j, k = 0, h = 0;
-		int rowIndex = rowsMax-rowsMin;
-		int columnIndex = columnsMax - columnsMin;
-		Item[][] result = new Item[rowIndex][columnIndex];
-		for(i = rowsMin; i <= rowIndex; i++){
-			result[k++][h] = itemCollection[i][0];
-			for(j = 0; j <= columnsMax-columnsMin;j++){
+		int rowIndex = rowMax - rowMin + 1;
+		int colIndex = colMax - colMin + 1;
+		Item[][] result = new Item[rowIndex][colIndex];
+		for(i = rowMin; i <= rowMax; i++){
+			for(j = colMin; j <= colMax; j++){
 				result[k][h++] = itemCollection[i][j];
 			}
+			k++;
+			h = 0;
 		}
 		return result;
 	}
