@@ -5,6 +5,7 @@ public class Monster extends GameObject{
 	private int hp;
 	private final int attack;
 	private final int defense;
+	private Player player;
 	
 	public Monster(String name, Sprite sprite, int xPos, int yPos, int _max_hp, int _hp, int _attack, int _defense){
 		super(name, sprite, xPos, yPos);
@@ -21,13 +22,17 @@ public class Monster extends GameObject{
 //	public void takeTurn(){
 //		
 //	}
-	
+	//Get monsters attack and players defense
+	//Calculate damage, ensuring that it is always at least 1 no matter
+	//how high the player's defense and pass this to the player class
 	public void attack(){
-		
+		int result = attack - player.getDefense();
+		if(result <= 0)result = 1;
+		player.takeDamage(result);
 	}
 	
-	public void takeDamage(){
-		// Pass in player to get items
+	public void takeDamage(int damage){
+		hp -= damage;
 	}
 	
 	public void heal(){
