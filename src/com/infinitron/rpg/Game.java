@@ -1,6 +1,13 @@
 package com.infinitron.rpg;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.SurfaceView;
@@ -27,10 +34,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	// Animated Game Object Test
 	public Sprite[] animatedElaineSprites = {new Sprite(elaine, 0), new Sprite(elaine, 1), new Sprite(elaine, 2), new Sprite(elaine, 3), new Sprite(elaine, 4)};
 	public AnimatedGameObject animatedElaineObject = new AnimatedGameObject("Elaine", animatedElaineSprites, 70, 70, 100, GameThread.CYCLE_TIME);
-	
-	public Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map);
-	public GridSpriteSheet map_tilesheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.map_tilesheet), 16, 16); 
-	public Level level = new Level(map, map_tilesheet, 60, 60);
+
+	public GridSpriteSheet map_tilesheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.map_tilesheet), 16, 16);
+	public GridSpriteSheet map_decor_tilesheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.map_decor_tilesheet), 16, 16);
+	public Level level = new Level(readTxt(getResources().openRawResource(R.raw.map_10x20)), map_tilesheet, readTxt(getResources().openRawResource(R.raw.map_decor_10x20)), map_decor_tilesheet, 10, 20);
 	
 	Monster[] monsterCollection = new Monster[10];//Would then call createMonsters to fill array
 	Item[][] itemCollection = new Item[3][10];//Would then call createItems to fill array
@@ -85,6 +92,24 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		animatedElaineObject.update();
 	}
 	
+	private String readTxt(InputStream is) {
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		int i;
+		try {
+			i = is.read();
+			while (i != -1) {
+				byteArrayOutputStream.write(i);
+				i = is.read();
+			}
+			is.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	  	return byteArrayOutputStream.toString();
+	}
+
 	// 1d array full of monster objects 
 	//Monster extends GameObject and hence has the following attributes: String name, Sprite sprite, int xPos, int yPos, int _max_hp, int _hp, int _attack, int _defense
 	//The following method will take the array monster collection and manually fill it with monsters

@@ -15,57 +15,63 @@ public class Level {
 	private Bitmap map;
 	private int width;
 	private int height;
-	public Tile tiles[][];
+	public Tile map_tiles[][];
+	public Tile decor_tiles[][];
 	
-	// RGB values to find tiles types from map image
-	public int grass_col = 0xff00ff00;
-	public int path_col = 0xff808080;
-	public int flower_col = 0xffffff00;
-	public int dark_grass_col = 0xff009900;
-	public int tree_col = 0xffff9900;
-	
-	public Level (Bitmap map, GridSpriteSheet tilesheet, int width, int height) {
-		assert(width == map.getWidth() && height == map.getHeight()); // asserts correct quality res was used
+	public Level (String map, GridSpriteSheet mapsheet, String decor, GridSpriteSheet decorsheet, int width, int height) {
 		this.width = width;
 		this.height = height;
-		this.map = map;
 		
-		tiles = new Tile[height][width];
-		generateLevel(map, tilesheet, width, height);
+		map_tiles = new Tile[height][width];
+		decor_tiles = new Tile[height][width];
+		generateMap(map, mapsheet);
+		generateDecor(decor, decorsheet);
 	}
 	
-	private void generateLevel(Bitmap bitmap, GridSpriteSheet tilesheet, int width, int height) {
-		int pixel;
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				
-				pixel = bitmap.getPixel(x, y);
-				//Log.d("Level", y + ", " + x + ": " + Integer.toHexString(pixel));
-				
-				// find tile by pixel colour
-				if (pixel == grass_col)				tiles[y][x] = new Tile(new Sprite(tilesheet, 0, 0), 16, false);
-				else if (pixel == flower_col)		tiles[y][x] = new Tile(new Sprite(tilesheet, 0, 1), 16, false);
-				else if (pixel == dark_grass_col)	tiles[y][x] = new Tile(new Sprite(tilesheet, 0, 2), 16, false);
-				else if (pixel == path_col)			tiles[y][x] = new Tile(new Sprite(tilesheet, 1, 0), 16, false);
-				else if (pixel == tree_col)			tiles[y][x] = new Tile(new Sprite(tilesheet, 2, 0), 16, true);
-				
-				else tiles[y][x] = new Tile(new Sprite(tilesheet, 15, 15), 16, false); // void tile
-			}
+	private void generateMap(String map, GridSpriteSheet mapsheet) {
+		String[] tile_strings = map.split("\\W+");
+		String tile_string;
+		int y = 0;
+		int x = 0;
+		for (int i = 0; i < tile_strings.length; i++) {
+			tile_string = tile_strings[i];
+			y = i / width;
+			x = i % width;
+			if (tile_string.equals("grass"))		{map_tiles[y][x] = new Tile(new Sprite(mapsheet, 0, 0), 16, true); System.out.println("grass");}
+			else if (tile_string.equals("flower"))	{map_tiles[y][x] = new Tile(new Sprite(mapsheet, 0, 1), 16, true); System.out.println("flower");}
+			else if (tile_string.equals("path"))	{map_tiles[y][x] = new Tile(new Sprite(mapsheet, 1, 0), 16, true); System.out.println("path");}
+			else 									{map_tiles[y][x] = new Tile(new Sprite(mapsheet, 15, 15), 16, true); System.out.println("void");}
+			
+		}
+	}
+	
+	private void generateDecor(String decor, GridSpriteSheet decorsheet) {
+		String[] tile_strings = decor.split("\\W+");
+		String tile_string;
+		int y = 0;
+		int x = 0;
+		for (int i = 0; i < tile_strings.length; i++) {
+			tile_string = tile_strings[i];
+			y = i / width;
+			x = i % width;
+			if (tile_string.equals("tree"))			{decor_tiles[y][x] = new Tile(new Sprite(decorsheet, 0, 0), 16, false); System.out.println("tree");}
+			else if (tile_string.equals("rock"))	{decor_tiles[y][x] = new Tile(new Sprite(decorsheet, 0, 1), 16, false); System.out.println("rock");}
+			else 									{decor_tiles[y][x] = new Tile(new Sprite(decorsheet, 15, 15), 16, true); System.out.println("empty");}
 		}
 	}
 	
 	/* draw the level tiles from a top-left position to the side of the canvas */
 	public void drawLevel(Canvas canvas, int y_offset, int x_offset) {
-
+		
 		int no_of_tiles_wide = canvas.getWidth() / TILE_SIZE;
 		int no_of_tiles_high = canvas.getHeight() / TILE_SIZE;
 		
-		for (int i = 0; i < no_of_tiles_high; i++) {
-			for (int j = 0; j < no_of_tiles_wide; j++) {
-				tiles[y_offset + i][x_offset + j].draw(canvas, i, j);
+		for (int i = 0; i < no_of_tiles_high && i + x_offset < height; i++) {
+			for (int j = 0; j < no_of_tiles_wide && j + y_offset < width; j++) {
+				map_tiles[y_offset + i][x_offset + j].draw(canvas, i, j);
+				decor_tiles[y_offset + i][x_offset + j].draw(canvas, i, j);
 			}
 		}
-		    
 	}
-	
+
 }
