@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 
@@ -17,7 +18,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
 	private SurfaceHolder surfaceHolder;
 	private GameThread gameThread;
-	private GameRenderer renderer;
 	
 	/* TESTING SPRITE RENDERING */
 	
@@ -54,12 +54,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		surfaceHolder.addCallback(this);
 		setFocusable(true);
 		
-		renderer = new GameRenderer();
-		renderer.addRenderable(elaineObject);
-		renderer.addRenderable(monster1Object);
-		renderer.addRenderable(animatedElaineObject);
-		
-		gameThread = new GameThread(this, renderer, level);
+		gameThread = new GameThread(this, level);
 	}
 
 	@Override
@@ -86,6 +81,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
 		gameThread.surfaceChanged(surfaceHolder, format, width, height);
+	}
+	
+	public void draw(Canvas canvas) {
+		monster1Object.draw(canvas);
+		animatedElaineObject.draw(canvas);
 	}
 	
 	public void update() {

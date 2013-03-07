@@ -12,7 +12,6 @@ public class GameThread extends Thread {
 	private SurfaceHolder surfaceHolder;
 	private Game game;
 	
-	private GameRenderer renderer;
 	private Level level;
 	
 	private boolean running;
@@ -31,11 +30,10 @@ public class GameThread extends Thread {
 	
 	private Paint fpsPaint;
 	
-	public GameThread(Game game, GameRenderer renderer, Level level) {
+	public GameThread(Game game, Level level) {
 		this.game = game;
 		this.surfaceHolder = game.getHolder();
 		
-		this.renderer = renderer;
 		this.level = level;
 			
 		paused = false;
@@ -89,7 +87,7 @@ public class GameThread extends Thread {
 					this.game.update();
 					canvas.drawColor(Color.MAGENTA);
 					this.level.drawLevel(canvas, 0, 0);
-					this.renderer.drawFrame(canvas);
+					this.game.draw(canvas);
 					this.drawFPS(canvas);
 					
 					final long endTime = System.currentTimeMillis() - beginTime;
