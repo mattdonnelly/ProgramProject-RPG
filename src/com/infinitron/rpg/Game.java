@@ -37,7 +37,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
 	public GridSpriteSheet map_tilesheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.map_tilesheet), 16, 16);
 	public GridSpriteSheet map_decor_tilesheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.map_decor_tilesheet), 16, 16);
-	public Level level = new Level(readTxt(getResources().openRawResource(R.raw.map_10x20)), map_tilesheet, readTxt(getResources().openRawResource(R.raw.map_decor_10x20)), map_decor_tilesheet, 10, 20);
+	public Level level = new Level(BitmapFactory.decodeResource(getResources(), R.drawable.map_image), readTxt(getResources().openRawResource(R.raw.map_ground_20x40)), map_tilesheet, readTxt(getResources().openRawResource(R.raw.map_decor_20x40)), map_decor_tilesheet, 20, 40);
 	
 	Monster[] monsterCollection = new Monster[10];//Would then call createMonsters to fill array
 	Item[][] itemCollection = new Item[3][10];//Would then call createItems to fill array
