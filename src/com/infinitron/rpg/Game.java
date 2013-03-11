@@ -150,17 +150,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		itemCollection[2][1] = new Potion("Small Potion",	itemSprites[2][1],	itemCollection[2][1].getXPos(),	itemCollection[1][1].getYPos(),	3,		0,		3,	30);
 		itemCollection[2][2] = new Potion("Medium Potion",	itemSprites[2][2],	itemCollection[2][2].getXPos(),	itemCollection[1][2].getYPos(),	5,		0,		3,	50);
 	}
-	//A method which takes two integers, one defining the highest point in the monster array needed and the other the lowest
-	//The function then creates a new array containing all the monsters within this range and returns it
-	//Example: max = 8,min = 4, result will contain 5 values, the value at index 4,5,6,7,8 of monsterCollection 
-	public Monster[] getMonsterRange(int max, int min){
-		int i,j = 0;
-		Monster[] result = new Monster[(max - min) + 1];
-		for(i = min; i <= max;i++){
-			result[j++] = monsterCollection[i];
-		}
-		return result;
 	
+	//NOTE: use when only a linear section of monsterCollection needs to be copied
+	//A method which takes two position markers and a length parameter. srcPos specifies the start point of
+	//the array monsterCollection from which to start copying. destPos specifies the start position of the
+	//return array. length specifies the number of elements to copy over
+	public Monster[] getSimpleMonsterRange(int srcPos, int destPos, int length){
+		Monster[] result = new Monster[length+1];//Must be length + 1 to avoid out of bounds
+		System.arraycopy(monsterCollection, srcPos, result, destPos, length);
+		return result;
 	}
 	//A method which returns an array of items which can consist of weapons,armor,potions or all
 	//As parameters it takes four integers. 
@@ -183,6 +181,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 			k++;
 			h = 0;
 		}
+		return result;
+	}
+
+	// NOTE: when used with 2d array, copies over number of rows given by length
+	// A method which takes two position markers and a length parameter. srcPos
+	// specifies the start point of the array row itemCollection from which to start copying. destPos
+	// specifies the start position of the return array. length specifies the number of elements to copy over
+	public Item[][] getSimpleItemRange(int srcPos, int destPos, int length) {
+		Item[][] result = new Item[length + 1][3];// SECOND ARRAY BOUND MUST BE SAME AS ITEMCOLLECTION
+		System.arraycopy(itemCollection, srcPos, result, destPos, length);
 		return result;
 	}
 }
