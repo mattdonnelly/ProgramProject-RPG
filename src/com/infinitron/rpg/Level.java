@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.SurfaceView;
 
@@ -18,14 +19,16 @@ public class Level {
 	public Tile map_tiles[][];
 	public Tile decor_tiles[][];
 	
-	public Level (String map, GridSpriteSheet mapsheet, String decor, GridSpriteSheet decorsheet, int width, int height) {
+	public Level (Bitmap map_bitmap, String map_text, GridSpriteSheet mapsheet, String decor_text, GridSpriteSheet decorsheet, int width, int height) {
+		this.map = map_bitmap;
 		this.width = width;
 		this.height = height;
 		
-		map_tiles = new Tile[height][width];
-		decor_tiles = new Tile[height][width];
-		generateMap(map, mapsheet);
-		generateDecor(decor, decorsheet);
+		this.map_tiles = new Tile[height][width];
+		this.decor_tiles = new Tile[height][width];
+		
+		generateMap(map_text, mapsheet);
+		generateDecor(decor_text, decorsheet);
 	}
 	
 	private void generateMap(String map, GridSpriteSheet mapsheet) {
@@ -85,7 +88,8 @@ public class Level {
 		}
 	}
 	
-	/* draw the level tiles from a top-left position to the side of the canvas */
+	/* draw the level tiles from a top-left position to the side of the canvas
+	 * calls Tile.draw for each tile that should apear on the screen */
 	public void drawLevel(Canvas canvas, int y_offset, int x_offset) {
 		
 		int no_of_tiles_wide = canvas.getWidth() / TILE_SIZE;
@@ -97,6 +101,19 @@ public class Level {
 				decor_tiles[y_offset + i][x_offset + j].draw(canvas, i, j);
 			}
 		}
+		
 	}
 
+	/* Part of a large bitmap is draw onto the screen */
+	public void drawLevelBitmap(Canvas canvas, int y_offset, int x_offset) {
+		int canvas_width = canvas.getWidth();
+		int canvas_height = canvas.getHeight();
+		
+		Rect sourceRect = new Rect(x_offset, y_offset, canvas_width, canvas_height);
+		Rect destRect = new Rect(0, 0, canvas_width, canvas_height);
+		
+		canvas.drawBitmap(map, sourceRect, destRect, null);
+
+	}
+	
 }
