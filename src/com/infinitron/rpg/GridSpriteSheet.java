@@ -1,6 +1,7 @@
 package com.infinitron.rpg;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 public class GridSpriteSheet extends SpriteSheet {
 	
@@ -27,7 +28,7 @@ public class GridSpriteSheet extends SpriteSheet {
 		int selectedRow = 0;
 		if (this.rows != 0)
 			selectedRow = (index - selectedColumn) / this.rows;
-								
+		Log.d("Speech Bubble", "width: " + this.tileWidth + "\t height: " + this.tileHeight);					
 		return Bitmap.createBitmap(this.sheet, selectedColumn * tileWidth, selectedRow * tileHeight, this.tileWidth, this.tileHeight);
 	}
 	

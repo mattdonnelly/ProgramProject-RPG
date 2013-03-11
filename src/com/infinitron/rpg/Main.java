@@ -2,6 +2,7 @@ package com.infinitron.rpg;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.Window;
 
 public class Main extends Activity {
@@ -10,7 +11,10 @@ public class Main extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int starttime = (int)System.currentTimeMillis();
         setContentView(new Game(this));
+        int endtime = (int) System.currentTimeMillis();
+        Log.d("Time Taken","Time taken to build app: "+ (endtime - starttime) + "ms");
     }
     
     @Override

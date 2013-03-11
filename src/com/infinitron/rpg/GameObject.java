@@ -1,6 +1,7 @@
 package com.infinitron.rpg;
 
 import android.graphics.Canvas;
+import android.view.MotionEvent;
 
 public class GameObject {
 	
@@ -23,15 +24,14 @@ public class GameObject {
 		
 	}
 	public int getXPos(){
-		return x;
+		return this.x;
 	}
 	public int getYPos(){
-		return y;
+		return this.y;
 	}
 	
 	
 	public void update(){
-		
 	}
 	
 	public void move(){
@@ -39,6 +39,11 @@ public class GameObject {
 	}
 	
 	public void draw(){
+		
+	}
+
+	public void doTouch(MotionEvent event) {
+		// TODO Auto-generated method stub
 		
 	}
 }

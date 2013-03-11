@@ -1,5 +1,7 @@
 package com.infinitron.rpg;
 
+import java.util.ArrayList;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,7 +13,7 @@ public class GameThread extends Thread {
 	
 	private SurfaceHolder surfaceHolder;
 	private Game game;
-	
+	private ArrayList<GameObject> renderer;
 	private Level level;
 	
 	private boolean running;
@@ -33,11 +35,10 @@ public class GameThread extends Thread {
 	public GameThread(Game game, Level level) {
 		this.game = game;
 		this.surfaceHolder = game.getHolder();
-		
+
 		this.level = level;
 			
 		paused = false;
-				
 		fpsPaint = new Paint(); 
 		fpsPaint.setColor(Color.WHITE); 
 		fpsPaint.setStyle(Style.FILL); 
@@ -50,7 +51,10 @@ public class GameThread extends Thread {
 
 		canvas.drawText("" + game.fps + " FPS", width - 90, 40, fpsPaint);
 	}
-	
+	public void drawObjects(Canvas canvas) {
+		canvas = this.surfaceHolder.lockCanvas();
+		
+	}
 	@Override
 	public void run() {
 		Canvas canvas;
@@ -85,11 +89,14 @@ public class GameThread extends Thread {
 					framesSkipped = 0;
 					
 					this.game.update();
+					
 					canvas.drawColor(Color.MAGENTA);
 					//this.level.drawLevel(canvas, 0, 0);
 					this.level.drawLevelBitmap(canvas, 22, 22);
+					this.level.drawLevel(canvas, 0, 0);
 					this.game.draw(canvas);
 					this.drawFPS(canvas);
+					this.game.updateNPC(canvas);
 					
 					final long endTime = System.currentTimeMillis() - beginTime;
 					

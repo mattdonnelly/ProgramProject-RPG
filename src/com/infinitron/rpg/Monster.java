@@ -15,6 +15,8 @@ public class Monster extends GameObject{
 		defense = _defense;
 	}
 
+	@Override
+
 	public void update(){
 		
 	}

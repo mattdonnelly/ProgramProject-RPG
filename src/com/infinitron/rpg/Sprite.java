@@ -1,7 +1,10 @@
 package com.infinitron.rpg;
 
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 
 public class Sprite {
 
@@ -24,6 +27,10 @@ public class Sprite {
 	}
 	
 	public void draw(int x, int y, Canvas canvas) {
-		canvas.drawBitmap(this.bitmap, (float)x, (float)y, null);
+		canvas.drawBitmap(this.bitmap, x, y, null);
+	}
+	public void	draw(Rect src, int bottom, int left, int right, int top, Paint paint, Canvas canvas) {
+		Rect dest = new Rect(bottom, left, right, top);
+		canvas.drawBitmap(this.bitmap, src, dest, paint);
 	}
 }

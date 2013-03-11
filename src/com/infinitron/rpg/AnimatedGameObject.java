@@ -17,6 +17,7 @@ public class AnimatedGameObject extends GameObject {
 		this.runningTime = 0;
 	}
 	
+	@Override
 	public void update() {
 		if (runningTime > updateTime) {
 			runningTime = 0;

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animations>
+    <animation name="walk" canloop="true" >
+        <framerect top="0" left="0" bottom="47" right="30" delayNextFrame="10" /> 
+		<framerect top="0" left="30" bottom="47" right="60" delayNextFrame="10" /> 
+		<framerect top="0" left="60" bottom="47" right="90" delayNextFrame="10" /> 
+		<framerect top="0" left="90" bottom="47" right="120" delayNextFrame="10" /> 
+		<framerect top="0" left="120" bottom="47" right="150" delayNextFrame="10" /> 
+    </animation>
+</animations>
