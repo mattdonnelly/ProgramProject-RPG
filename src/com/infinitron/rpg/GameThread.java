@@ -13,7 +13,6 @@ public class GameThread extends Thread {
 	
 	private SurfaceHolder surfaceHolder;
 	private Game game;
-	private ArrayList<GameObject> renderer;
 	private Level level;
 	
 	private boolean running;

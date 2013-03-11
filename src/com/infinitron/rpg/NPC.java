@@ -57,8 +57,8 @@ public class NPC extends GameObject {
 			bubble.draw(src, getXPos() - 40, 50, (int)bubble_width + 170, 150, paint, canvas);	// Able to scale dialog box *needs improving!*
 			canvas.drawText(this.text, this.getXPos(), this.getYPos() - 90, paint);
 			
-			Log.d("Print Text", "xpos: " + getXPos() + "	ypos: "
-					+ (getYPos()) + '\t' + bubble_width);
+//			Log.d("Print Text", "xpos: " + getXPos() + "	ypos: "
+//					+ (getYPos()) + '\t' + bubble_width);
 		}
 	}
 
