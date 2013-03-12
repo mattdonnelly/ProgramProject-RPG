@@ -88,9 +88,7 @@ public class GameThread extends Thread {
 					this.game.update();
 					
 					canvas.drawColor(Color.MAGENTA);
-					//this.level.drawLevel(canvas, 0, 0);
 					this.level.drawLevelBitmap(canvas, 22, 22);
-					this.level.drawLevel(canvas, 0, 0);
 					this.game.draw(canvas);
 					this.drawFPS(canvas);
 					this.game.updateNPC(canvas);
