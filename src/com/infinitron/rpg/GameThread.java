@@ -1,12 +1,10 @@
 package com.infinitron.rpg;
 
-import java.util.ArrayList;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class GameThread extends Thread {

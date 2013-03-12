@@ -4,16 +4,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.Path;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.util.Log;
 import android.view.MotionEvent;
 
 public class NPC extends GameObject {
 	private final String text;
 	private boolean state;
-	private Rect src, dst;
+	private Rect src;
 	private Paint paint = new Paint();
 	private Sprite bubble;
 	private float bubble_width;
@@ -56,9 +53,7 @@ public class NPC extends GameObject {
 			// outrageous scaling used!
 			bubble.draw(src, getXPos() - 40, 50, (int)bubble_width + 170, 150, paint, canvas);	// Able to scale dialog box *needs improving!*
 			canvas.drawText(this.text, this.getXPos(), this.getYPos() - 90, paint);
-			
-//			Log.d("Print Text", "xpos: " + getXPos() + "	ypos: "
-//					+ (getYPos()) + '\t' + bubble_width);
+
 		}
 	}
 

@@ -1,14 +1,9 @@
 package com.infinitron.rpg;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
@@ -42,8 +37,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	public Sprite[] animatedElaineSprites = {new Sprite(elaine, 0), new Sprite(elaine, 1), new Sprite(elaine, 2), new Sprite(elaine, 3), new Sprite(elaine, 4)};
 	public AnimatedGameObject animatedElaineObject = new AnimatedGameObject("Elaine", animatedElaineSprites, 70, 70, 100, GameThread.CYCLE_TIME);
 
-	public GridSpriteSheet map_tilesheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.map_tilesheet), 16, 16);
-	public GridSpriteSheet map_decor_tilesheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.map_decor_tilesheet), 16, 16);
+	public GridSpriteSheet map_tilesheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.terrain), 16, 16);
+	public GridSpriteSheet map_decor_tilesheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.decorations), 16, 16);
 	public Level level = new Level(BitmapFactory.decodeResource(getResources(), R.drawable.map_image), readTxt(getResources().openRawResource(R.raw.map_ground_20x40)), map_tilesheet, readTxt(getResources().openRawResource(R.raw.map_decor_20x40)), map_decor_tilesheet, 20, 40);
 
 	Monster[] monsterCollection = new Monster[10];//Would then call createMonsters to fill array
@@ -87,6 +82,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		gameThread.surfaceChanged(surfaceHolder, format, width, height);
 	}
 
+	@Override
 	public void draw(Canvas canvas) {
 		monster1Object.draw(canvas);
 		animatedElaineObject.draw(canvas);
@@ -203,7 +199,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	
     @Override
     public boolean onTouchEvent(MotionEvent event){
+    	/*
+    	 * Get area touched
+    	 */
     	elaineNPC.setState(!elaineNPC.isState());
+    	
     	return super.onTouchEvent(event);
     }
     
