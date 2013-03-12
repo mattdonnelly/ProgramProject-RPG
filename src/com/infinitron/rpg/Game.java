@@ -23,10 +23,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	public GameObject elaineObject = new GameObject("Elaine", elaineSprite, 20, 20);
 
 	// NPC sprite/object Test
-	//public GridSpriteSheet speech_bubble = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.speech_bubble),47, 38);	
-	//public Sprite elaine_talk = new Sprite(speech_bubble,0);
-	//public Sprite[] npc = {new Sprite(elaine, 0)};	// She's good and bad :O
-	//public NPC elaineNPC = new NPC("elaineNPC", npc[0], 100, 200, "Hi, my name is Elaine", elaine_talk, true);
+	public GridSpriteSheet speech_bubble = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.speech_bubble),47, 38);	
+	public Sprite elaine_talk = new Sprite(speech_bubble,0);
+	public Sprite[] npc = {new Sprite(elaine, 0)};	// She's good and bad :O
+	public NPC elaineNPC = new NPC("elaineNPC", npc[0], 100, 200, "Hi, my name is Elaine", elaine_talk, true);
     
 	// Monster sprite rendering
 	public GridSpriteSheet monster1 = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.monster_inc), 100, 100);
@@ -194,7 +194,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		return result;
 	}
 	public void updateNPC(Canvas canvas) {
-		//elaineNPC.update(canvas);
+		elaineNPC.update(canvas);
 	}
 	
     @Override
@@ -202,7 +202,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     	/*
     	 * Get area touched
     	 */
-    	//elaineNPC.setState(!elaineNPC.isState());
+    	elaineNPC.setState(!elaineNPC.isState());
     	
     	return super.onTouchEvent(event);
     }
