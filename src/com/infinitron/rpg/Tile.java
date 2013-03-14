@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 
 public class Tile {
 	
+	public static final int SIZE = 16;
+	
 	private Sprite sprite;
 	private boolean is_solid;
 	private int size;

@@ -11,7 +11,6 @@ public class GameThread extends Thread {
 	
 	private SurfaceHolder surfaceHolder;
 	private Game game;
-	private Level level;
 	
 	private boolean running;
 	private boolean paused;
@@ -24,17 +23,15 @@ public class GameThread extends Thread {
 	private long statusIntervalTimer = 0l;
 	private int ticks = 0;
 	
-	private int width = 0;
-	private int height = 0;
+	public static int width = 0;
+	public static int height = 0;
 	
 	private Paint fpsPaint;
 	
-	public GameThread(Game game, Level level) {
+	public GameThread(Game game) {
 		this.game = game;
 		this.surfaceHolder = game.getHolder();
 
-		this.level = level;
-			
 		paused = false;
 		fpsPaint = new Paint(); 
 		fpsPaint.setColor(Color.WHITE); 
@@ -48,10 +45,12 @@ public class GameThread extends Thread {
 
 		canvas.drawText("" + game.fps + " FPS", width - 90, 40, fpsPaint);
 	}
+	
 	public void drawObjects(Canvas canvas) {
 		canvas = this.surfaceHolder.lockCanvas();
 		
 	}
+	
 	@Override
 	public void run() {
 		Canvas canvas;
@@ -88,7 +87,6 @@ public class GameThread extends Thread {
 					this.game.update();
 					
 					canvas.drawColor(Color.MAGENTA);
-					this.level.drawLevelBitmap(canvas, 22, 22);
 					this.game.draw(canvas);
 					this.drawFPS(canvas);
 					this.game.updateNPC(canvas);

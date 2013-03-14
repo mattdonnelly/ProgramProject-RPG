@@ -3,21 +3,31 @@ package com.infinitron.rpg;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 
 public class Level {
 
 	public static final int TILE_SIZE = 16;
+	public int pixels_wide;
+	public int pixels_high;
 
 	private Bitmap map;
-	private int width;
-	private int height;
+	private int map_pixels_wide;
+	private int map_pixels_high;
+	private int tiles_wide;
+	private int tiles_high;
 	public Tile map_tiles[][];
 	public Tile decor_tiles[][];
 
 	public Level (Bitmap map_bitmap, String map_text, GridSpriteSheet mapsheet, String decor_text, GridSpriteSheet decorsheet, int width, int height) {
 		this.map = map_bitmap;
-		this.width = width;
-		this.height = height;
+		this.tiles_wide = width;
+		this.tiles_high = height;
+		this.map_pixels_wide = map.getWidth();
+		this.map_pixels_high = map.getHeight();
+		
+		this.pixels_wide = tiles_wide * Tile.SIZE;
+		this.pixels_high = tiles_high * Tile.SIZE;
 
 		this.map_tiles = new Tile[height][width];
 		this.decor_tiles = new Tile[height][width];
@@ -33,8 +43,8 @@ public class Level {
 		int x = 0;
 		for (int i = 0; i < tile_strings.length; i++) {
 			tile_string = tile_strings[i];
-			y = i / width;
-			x = i % width;
+			y = i / tiles_wide;
+			x = i % tiles_wide;
 			if (tile_string.equals("grass1"))		{map_tiles[y][x] = new Tile(new Sprite(mapsheet, 0, 0), 16, true); System.out.println("grass");}
 			else if (tile_string.equals("rock"))	{map_tiles[y][x] = new Tile(new Sprite(mapsheet, 0, 2), 16, true); System.out.println("rock");}
 			else if (tile_string.equals("water"))	{map_tiles[y][x] = new Tile(new Sprite(mapsheet, 0, 3), 16, true); System.out.println("path");}
@@ -50,8 +60,8 @@ public class Level {
 		int x = 0;
 		for (int i = 0; i < tile_strings.length; i++) {
 			tile_string = tile_strings[i];
-			y = i / width;
-			x = i % width;
+			y = i / tiles_wide;
+			x = i % tiles_wide;
 			if (tile_string.equals("rocktl"))		{decor_tiles[y][x] = new Tile(new Sprite(decorsheet, 0, 0), 16, false); System.out.println("rocktl");}
 			else if (tile_string.equals("rocktc"))	{decor_tiles[y][x] = new Tile(new Sprite(decorsheet, 0, 1), 16, false); System.out.println("rocktc");}
 			else if (tile_string.equals("rocktr"))	{decor_tiles[y][x] = new Tile(new Sprite(decorsheet, 0, 2), 16, false); System.out.println("rocktr");}
@@ -83,29 +93,29 @@ public class Level {
 		}
 	}
 
-	/* draw the level tiles from a top-left position to the side of the canvas
-	 * calls Tile.draw for each tile that should apear on the screen */
-	public void drawLevel(Canvas canvas, int y_offset, int x_offset) {
-
-		int no_of_tiles_wide = canvas.getWidth() / TILE_SIZE;
-		int no_of_tiles_high = canvas.getHeight() / TILE_SIZE;
-
-		for (int i = 0; i < no_of_tiles_high && i + x_offset < height; i++) {
-			for (int j = 0; j < no_of_tiles_wide && j + y_offset < width; j++) {
-				map_tiles[y_offset + i][x_offset + j].draw(canvas, i, j);
-				decor_tiles[y_offset + i][x_offset + j].draw(canvas, i, j);
-			}
+	/* Part of a large bitmap is draw onto the screen */
+	public void draw(Canvas canvas, int x_screen_pos, int y_screen_pos) {
+		//Log.d("Level", "pos passed to draw: " + x_screen_pos + "," + y_screen_pos);
+		//Log.d("Level", "bmp: " + map_pixels_wide + "*" + map_pixels_high);
+		int screen_width = 240;
+		int screen_height = 400;
+		
+		if (x_screen_pos < 0) { 
+			x_screen_pos = 0;
+		} else if (x_screen_pos + screen_width > map_pixels_wide) {
+			x_screen_pos = map_pixels_wide - screen_width;
+		}
+		
+		if (y_screen_pos < 0) { 
+			y_screen_pos = 0;
+		} else if (y_screen_pos + screen_height > map_pixels_high) {
+			y_screen_pos = map_pixels_high - screen_height;
 		}
 
-	}
+		//Log.d("Level", "src rect: " + x_screen_pos + ", " + y_screen_pos + ", " + (x_screen_pos + screen_width) + ", " + (y_screen_pos + screen_height));
+		Rect sourceRect = new Rect(x_screen_pos, y_screen_pos, x_screen_pos + screen_width, y_screen_pos + screen_height);
 
-	/* Part of a large bitmap is draw onto the screen */
-	public void drawLevelBitmap(Canvas canvas, int y_offset, int x_offset) {
-		int canvas_width = canvas.getWidth();
-		int canvas_height = canvas.getHeight();
-
-		Rect sourceRect = new Rect(x_offset, y_offset, canvas_width, canvas_height);
-		Rect destRect = new Rect(0, 0, canvas_width, canvas_height);
+		Rect destRect = new Rect(0, 0, canvas.getWidth() / 2, canvas.getHeight() / 2);
 
 		canvas.drawBitmap(map, sourceRect, destRect, null);
 

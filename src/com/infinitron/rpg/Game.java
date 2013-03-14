@@ -40,6 +40,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	public GridSpriteSheet map_tilesheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.terrain), 16, 16);
 	public GridSpriteSheet map_decor_tilesheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.decorations), 16, 16);
 	public Level level = new Level(BitmapFactory.decodeResource(getResources(), R.drawable.map_image), readTxt(getResources().openRawResource(R.raw.map_ground_20x40)), map_tilesheet, readTxt(getResources().openRawResource(R.raw.map_decor_20x40)), map_decor_tilesheet, 20, 40);
+	
+	public Input input = new Input(Main.screen_width, Main.screen_height);
+	
+	private int x_screen_pos, y_screen_pos = 0;
 
 	Monster[] monsterCollection = new Monster[10];//Would then call createMonsters to fill array
 	Item[][] itemCollection = new Item[3][10];//Would then call createItems to fill array
@@ -56,7 +60,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		surfaceHolder.addCallback(this);
 		setFocusable(true);
 
-		gameThread = new GameThread(this, level);
+		gameThread = new GameThread(this);
 	}
 
 	public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -84,12 +88,26 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public void draw(Canvas canvas) {
+		level.draw(canvas, x_screen_pos, y_screen_pos);
 		monster1Object.draw(canvas);
 		animatedElaineObject.draw(canvas);
 	}
 
 	public void update() {
 		animatedElaineObject.update();
+		
+		if (input.up) {
+			y_screen_pos --;
+		}
+		if (input.down) {
+			y_screen_pos ++;
+		}
+		if (input.left) {
+			x_screen_pos --;
+		}		
+		if (input.right) {
+			x_screen_pos ++;
+		}
 	}
 
 	private String readTxt(InputStream is) {
@@ -202,9 +220,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     	/*
     	 * Get area touched
     	 */
-    	elaineNPC.setState(!elaineNPC.isState());
     	
-    	return super.onTouchEvent(event);
+    	input.onTouchEvent(event);
+    	
+    	if (input.pressed_down) {
+    		elaineNPC.setState(!elaineNPC.isState());
+    	}
+    	
+    	return true;
     }
     
 }
