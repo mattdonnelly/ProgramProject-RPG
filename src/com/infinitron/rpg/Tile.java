@@ -6,22 +6,15 @@ public class Tile {
 	
 	public static final int SIZE = 16;
 	
-	private Sprite sprite;
 	private boolean is_solid;
-	private int size;
+	private String name;
 			
-	public Tile(Sprite sprite, int size, boolean is_solid) {
-		this.sprite = sprite;
-		this.size = size;
+	public Tile(String name, boolean is_solid) {
+		this.name = name;
 		this.is_solid = is_solid;
 	}
 	
-	public void draw(Canvas canvas, int y_pos, int x_pos) {
-		if (x_pos * size >= 0 && x_pos * size < canvas.getWidth() && y_pos * size >= 0 && y_pos * size < canvas.getHeight()) 
-			canvas.drawBitmap(sprite.getImage(), x_pos * size, y_pos * size, null);
-	}
-	
-	public boolean solid() {
+	public boolean isSolid() {
 		return is_solid;
 	}
 	
