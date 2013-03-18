@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Window;
 
 public class Main extends Activity {

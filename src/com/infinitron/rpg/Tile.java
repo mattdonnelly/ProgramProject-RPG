@@ -1,7 +1,5 @@
 package com.infinitron.rpg;
 
-import android.graphics.Canvas;
-
 public class Tile {
 	
 	public static final int SIZE = 16;
