@@ -8,6 +8,13 @@ public class Player extends GameObject{
 	private Monster monster;
 	private Weapon weapon;
 	private Armor armor;
+	private Sprite[][] sprites;
+	private int currentSprite;
+	private int updateTime;
+	private int frameTime;
+	private int runningTime;
+	private int rowSprite = 0;
+	private boolean idle = true; 
 	
 	public Player(String _name, Sprite _sprite, int _xPos, int _yPos, int _max_hp, int _hp, Item[] _inventory){
 		super(_name, _sprite, _xPos, _yPos);
@@ -19,11 +26,51 @@ public class Player extends GameObject{
 		}			
 	}
 	
+	public Player(String name, Sprite[][] sprites, int x, int y, int _max_hp, int updateTime, int frameTime) {
+		super(name, sprites[0][0], x, y);
+		this.sprites = sprites;
+		this.currentSprite = 0; // sprite in row
+		this.rowSprite = 0; // correct direction to face
+		this.updateTime = updateTime;
+		this.frameTime = frameTime;
+		this.runningTime = 0;
+		this.max_hp = _max_hp;
+	}
+
 	@Override
 
 	public void update(){
-		
+		if (!idle) {
+			if (runningTime > updateTime) {
+				runningTime = 0;
+				currentSprite++;
+
+				if (currentSprite >= sprites.length)
+					currentSprite = 0;
+
+				this.sprite = sprites[rowSprite][currentSprite];
+			}
+		} else {
+			this.sprite = sprites[rowSprite][0];
+		}
+		runningTime += frameTime;
 	}
+	
+	public int setCorrectSprites(String movement) { // Working off which Row to get
+		idle = false;
+		if(movement.equals("up"))
+			rowSprite = 0;
+		else if(movement.equals("down"))
+			rowSprite = 2;
+		else if(movement.equals("left"))
+			rowSprite = 3;
+		else if(movement.equals("right"))
+			rowSprite = 1;
+		else
+			idle = true; // idle
+		return rowSprite;
+	}
+	
 	//Get players weapon damage and monster's defense
 	//Calculate damage, ensuring that it is always at least 1 no matter
 	//how high the monster's defense and pass this to the monster class

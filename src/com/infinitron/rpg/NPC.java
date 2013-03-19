@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
-import android.view.MotionEvent;
 
 public class NPC extends GameObject {
 	private final String text;
@@ -58,12 +57,7 @@ public class NPC extends GameObject {
 	}
 
 	@Override
-	public void doTouch(MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			/**
-			 * for(int i = 0; i < NPC.length(); i++) { find NPC touched }
-			 */
-
-		}
+	public void doTouch(String s) {
+		
 	}
 }

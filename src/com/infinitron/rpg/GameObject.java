@@ -1,7 +1,6 @@
 package com.infinitron.rpg;
 
 import android.graphics.Canvas;
-import android.view.MotionEvent;
 
 public class GameObject {
 	
@@ -42,8 +41,6 @@ public class GameObject {
 		
 	}
 
-	public void doTouch(MotionEvent event) {
-		// TODO Auto-generated method stub
-		
+	public void doTouch(String s) {
 	}
 }

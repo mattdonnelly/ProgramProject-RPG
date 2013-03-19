@@ -36,6 +36,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	// Animated Game Object Test
 	public Sprite[] animatedElaineSprites = {new Sprite(elaine, 0), new Sprite(elaine, 1), new Sprite(elaine, 2), new Sprite(elaine, 3), new Sprite(elaine, 4)};
 	public AnimatedGameObject animatedElaineObject = new AnimatedGameObject("Elaine", animatedElaineSprites, 70, 70, 100, GameThread.CYCLE_TIME);
+	
+	// Another bleedin' test -> Animated Player Object Test
+	public GridSpriteSheet p1 = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.player16x18),16,18);
+	
+	public Sprite[][] playerSprites = {
+			{new Sprite(p1, 0,0), new Sprite(p1, 0,1), new Sprite(p1, 0,2), new Sprite(p1, 0,3)},
+			{new Sprite(p1, 1,0), new Sprite(p1, 1,1), new Sprite(p1, 1,2), new Sprite(p1, 1,3)},
+			{new Sprite(p1, 2,0), new Sprite(p1, 2,1), new Sprite(p1, 2,2), new Sprite(p1, 2,3)},
+			{new Sprite(p1, 3,0), new Sprite(p1, 3,1), new Sprite(p1, 3,2), new Sprite(p1, 3,3)}
+			};
+	public Player player = new Player("Elaine", playerSprites, 110, 110, 500, 100, GameThread.CYCLE_TIME);
 
 	public Level level = new Level(BitmapFactory.decodeResource(getResources(), R.drawable.map_image), readTxt(getResources().openRawResource(R.raw.map_50x50)), 50, 50);
 	
@@ -89,22 +100,31 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		level.draw(canvas, x_screen_pos, y_screen_pos);
 		monster1Object.draw(canvas);
 		animatedElaineObject.draw(canvas);
+		player.draw(canvas);
 	}
 
 	public void update() {
 		animatedElaineObject.update();
+		player.update();
 		
 		if (input.up) {
+			player.setCorrectSprites("up");
 			y_screen_pos --;
 		}
 		if (input.down) {
+			player.setCorrectSprites("down");
 			y_screen_pos ++;
 		}
 		if (input.left) {
+			player.setCorrectSprites("left");
 			x_screen_pos --;
 		}		
 		if (input.right) {
+			player.setCorrectSprites("right");
 			x_screen_pos ++;
+		}
+		if (input.idle) {
+			player.setCorrectSprites("idle"); // cheat
 		}
 	}
 
@@ -222,7 +242,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     	input.onTouchEvent(event);
     	
     	if (input.pressed_down) {
-    		elaineNPC.setState(!elaineNPC.isState());
+//    		elaineNPC.setState(!elaineNPC.isState());
     	}
     	
     	return true;
