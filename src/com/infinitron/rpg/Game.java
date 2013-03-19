@@ -119,7 +119,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public void draw(Canvas canvas) {
 		level.draw(canvas, x_screen_pos, y_screen_pos);
-		for(int i = 0; i < levelMonsters.length;i++)gObject[i].draw(canvas);//Draws all monsters in the level
+		for(int i = 0; i < levelMonsters.length;i++){
+			if(levelMonsters[i].getHp() == 0)levelMonsters[i] = null;//Delete monsters that die
+			if(levelMonsters[i] != null)gObject[i].draw(canvas);//Draws all alive monsters in the level
+		}
 		animatedElaineObject.draw(canvas);
 		player.draw(canvas);
 	}
