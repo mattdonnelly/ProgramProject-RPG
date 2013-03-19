@@ -3,6 +3,7 @@ package com.infinitron.rpg;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Random;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -14,7 +15,20 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
 	private SurfaceHolder surfaceHolder;
 	private GameThread gameThread;
-
+	private Random randNum = new Random();
+	private Monster[] monsterCollection = new Monster[10];//Would then call createMonsters to fill array
+	private Item[][] itemCollection = new Item[3][10];//Would then call createItems to fill array
+	
+	/* Get monsters to place in level. Done by randomly selecting monsters from the monsterCollection and
+	 * placing them in the array levelMonsters. Selects items from monster array at random with
+	 * max monster being array length exclusive. Only get four monsters for now.
+	 */
+	public Monster[] levelMonsters = {monsterCollection[randNum.nextInt(monsterCollection.length)], monsterCollection[randNum.nextInt(monsterCollection.length)]
+										,monsterCollection[randNum.nextInt(monsterCollection.length)],monsterCollection[randNum.nextInt(monsterCollection.length)]};
+	
+	GridSpriteSheet[] gSheet = new GridSpriteSheet[levelMonsters.length];
+	Sprite[] sprite = new Sprite[levelMonsters.length];
+	GameObject[] gObject = new GameObject[levelMonsters.length];
 	/* TESTING SPRITE RENDERING */
 
 	// Test sprite rendering
@@ -29,9 +43,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	public NPC elaineNPC = new NPC("elaineNPC", npc[0], 100, 200, "Hi, my name is Elaine", elaine_talk, true);
     
 	// Monster sprite rendering
-	public GridSpriteSheet monster1 = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.monster_inc), 100, 100);
-	public Sprite monster1Sprite = new Sprite(monster1, 2);
-	public GameObject monster1Object = new GameObject("Monster1", monster1Sprite, 110, 50);
+//	public GridSpriteSheet monster1 = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.monster_inc), 100, 100);
+//	public Sprite monster1Sprite = new Sprite(monster1, 2);
+//	public GameObject monster1Object = new GameObject("Monster1", monster1Sprite, 110, 50);
 
 	// Animated Game Object Test
 	public Sprite[] animatedElaineSprites = {new Sprite(elaine, 0), new Sprite(elaine, 1), new Sprite(elaine, 2), new Sprite(elaine, 3), new Sprite(elaine, 4)};
@@ -50,12 +64,19 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
 	public Level level = new Level(BitmapFactory.decodeResource(getResources(), R.drawable.map_image), readTxt(getResources().openRawResource(R.raw.map_50x50)), 50, 50);
 	
+	//Replaces Monster Sprite Rendering by instead doing it for several monsters, chosen from the levelMonsters array
+	//NOTE parameters are incorrect, have chosen temporary values
+	public void makeMonsterSprites(){
+		for(int i = 0; i < levelMonsters.length; i++){
+			gSheet[i] = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.monster_inc), 100, 100);
+			sprite[i] = new Sprite(gSheet[i], i);
+			gObject[i] = new GameObject("Monster"+i, sprite[i], 110, 50);
+		}
+	}
+	
 	public Input input = new Input(Main.screen_width, Main.screen_height);
 	
 	private int x_screen_pos, y_screen_pos = 0;
-
-	Monster[] monsterCollection = new Monster[10];//Would then call createMonsters to fill array
-	Item[][] itemCollection = new Item[3][10];//Would then call createItems to fill array
 
 	protected int fps = 0;
 
@@ -98,7 +119,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public void draw(Canvas canvas) {
 		level.draw(canvas, x_screen_pos, y_screen_pos);
-		monster1Object.draw(canvas);
+		for(int i = 0; i < levelMonsters.length;i++)gObject[i].draw(canvas);//Draws all monsters in the level
 		animatedElaineObject.draw(canvas);
 		player.draw(canvas);
 	}
