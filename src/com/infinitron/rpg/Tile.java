@@ -15,5 +15,8 @@ public class Tile {
 	public boolean isSolid() {
 		return is_solid;
 	}
+	public String getName(){
+		return name;
+	}
 	
 }

@@ -94,11 +94,10 @@ public class Player extends GameObject{
 		hp += potion.getHpBoost();
 		if(hp > max_hp)hp = max_hp;
 	}
+	// getters and setters
 	public int getDefense(){
 		return armor.getDefense();
 	}
-
-	// getters and setters
 	public int getMax_hp(){
 		return max_hp;
 	}

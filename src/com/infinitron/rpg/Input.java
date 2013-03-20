@@ -1,7 +1,9 @@
 package com.infinitron.rpg;
 
 import android.view.MotionEvent;
-
+/*
+ * A class that represents user input, controlling the player character etc
+ */
 public class Input {
 	
 	public boolean pressed_down;

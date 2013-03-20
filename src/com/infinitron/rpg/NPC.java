@@ -27,20 +27,6 @@ public class NPC extends GameObject {
 		bubble_width = paint.measureText(text);
 		src = new Rect(0,0,47,38);
 	}
-
-	// getters and setters
-	public boolean isState() {
-		return state;
-	}
-
-	public void setState(boolean state) {
-		this.state = state;
-	}
-
-	public String getText() {
-		return text;
-	}
-
 	public void update(Canvas canvas) {
 		// change text - possibly have an on touch handler
 		/**
@@ -59,5 +45,17 @@ public class NPC extends GameObject {
 	@Override
 	public void doTouch(String s) {
 		
+	}
+	// getters and setters
+	public boolean isState() {
+		return state;
+	}
+
+	public void setState(boolean state) {
+		this.state = state;
+	}
+
+	public String getText() {
+		return text;
 	}
 }

@@ -42,11 +42,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	public Sprite[] npc = {new Sprite(elaine, 0)};	// She's good and bad :O
 	public NPC elaineNPC = new NPC("elaineNPC", npc[0], 100, 200, "Hi, my name is Elaine", elaine_talk, true);
     
-	// Monster sprite rendering
-//	public GridSpriteSheet monster1 = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.monster_inc), 100, 100);
-//	public Sprite monster1Sprite = new Sprite(monster1, 2);
-//	public GameObject monster1Object = new GameObject("Monster1", monster1Sprite, 110, 50);
-
 	// Animated Game Object Test
 	public Sprite[] animatedElaineSprites = {new Sprite(elaine, 0), new Sprite(elaine, 1), new Sprite(elaine, 2), new Sprite(elaine, 3), new Sprite(elaine, 4)};
 	public AnimatedGameObject animatedElaineObject = new AnimatedGameObject("Elaine", animatedElaineSprites, 70, 70, 100, GameThread.CYCLE_TIME);

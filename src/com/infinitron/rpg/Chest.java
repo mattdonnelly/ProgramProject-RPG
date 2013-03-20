@@ -10,7 +10,7 @@ public class Chest extends GameObject{
 		level = _level;
 		opened = _opened;
 		loot = new Item[_loot.length];
-		for(int i = 0; i < loot.length; i++){
+		for(int i = 0; i < loot.length; i++){//Transfer passed in loot to object
 			loot[i] = _loot[i];
 		}	
 	}

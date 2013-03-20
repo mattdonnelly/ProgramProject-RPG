@@ -144,8 +144,8 @@ public class GameThread extends Thread {
 	
 	public void surfaceChanged(SurfaceHolder surfaceholder, int format, int width, int height) {
 		synchronized (this) {
-			this.width = width;
-			this.height = height;
+			GameThread.width = width;
+			GameThread.height = height;
 		}
 	}
 }

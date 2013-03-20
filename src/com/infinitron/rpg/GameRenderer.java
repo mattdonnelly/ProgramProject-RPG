@@ -1,7 +1,6 @@
 package com.infinitron.rpg;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import java.util.ArrayList;
 
 public class GameRenderer {
