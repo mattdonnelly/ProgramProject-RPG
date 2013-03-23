@@ -2,7 +2,7 @@ package com.infinitron.rpg;
 
 public class Player extends GameObject {
 
-	public enum Direction {
+	public enum State {
 		UP, DOWN, LEFT, RIGHT, IDLE
 	}
 	
@@ -19,7 +19,9 @@ public class Player extends GameObject {
 	private int frameTime;
 	private int runningTime;
 	private int rowSprite = 0;
-	private boolean idle = true; 
+	private Player.State state;
+	private boolean idle = true;
+	private int lastX, lastY;
 	
 	public Player(String _name, Sprite _sprite, int _xPos, int _yPos, int _max_hp, int _hp, Item[] _inventory){
 		super(_name, _sprite, _xPos, _yPos);
@@ -40,11 +42,13 @@ public class Player extends GameObject {
 		this.frameTime = frameTime;
 		this.runningTime = 0;
 		this.max_hp = _max_hp;
+		this.lastX = x;
+		this.lastY = y;
 	}
 
 	@Override
 
-	public void update(){
+	public void update() {
 		if (!idle) {
 			if (runningTime > updateTime) {
 				runningTime = 0;
@@ -61,15 +65,15 @@ public class Player extends GameObject {
 		runningTime += frameTime;
 	}
 	
-	public int setCorrectSprites(Player.Direction d) { // Working off which Row to get
+	public int setCorrectSprites(Player.State s) { // Working off which Row to get
 		idle = false;
-		if (d == Player.Direction.UP)
+		if (s == Player.State.UP)
 			rowSprite = 0;
-		else if (d == Player.Direction.DOWN)
+		else if (s == Player.State.DOWN)
 			rowSprite = 2;
-		else if (d == Player.Direction.LEFT)
+		else if (s == Player.State.LEFT)
 			rowSprite = 3;
-		else if (d == Player.Direction.RIGHT)
+		else if (s == Player.State.RIGHT)
 			rowSprite = 1;
 		else
 			idle = true; // idle

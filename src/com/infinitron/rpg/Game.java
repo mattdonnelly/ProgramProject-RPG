@@ -127,23 +127,19 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		player.update();
 		
 		if (input.up) {
-			player.setCorrectSprites(Player.Direction.UP);
-			y_screen_pos --;
-		}
-		if (input.down) {
-			player.setCorrectSprites(Player.Direction.DOWN);
-			y_screen_pos ++;
-		}
-		if (input.left) {
-			player.setCorrectSprites(Player.Direction.LEFT);
-			x_screen_pos --;
-		}		
-		if (input.right) {
-			player.setCorrectSprites(Player.Direction.RIGHT);
-			x_screen_pos ++;
-		}
-		if (input.idle) {
-			player.setCorrectSprites(Player.Direction.IDLE); // cheat
+			player.setCorrectSprites(Player.State.UP);
+			//y_screen_pos --;
+		} else if (input.down) {
+			player.setCorrectSprites(Player.State.DOWN);
+			//y_screen_pos ++;
+		} else if (input.left) {
+			player.setCorrectSprites(Player.State.LEFT);
+			//x_screen_pos --;
+		} else if (input.right) {
+			player.setCorrectSprites(Player.State.RIGHT);
+			//x_screen_pos ++;
+		} else if (input.idle) {
+			player.setCorrectSprites(Player.State.IDLE); // cheat
 		}
 	}
 
