@@ -114,10 +114,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public void draw(Canvas canvas) {
 		level.draw(canvas, x_screen_pos, y_screen_pos);
-		for(int i = 0; i < levelMonsters.length;i++){
+		/*for(int i = 0; i < levelMonsters.length;i++){
 			if(levelMonsters[i].getHp() == 0)levelMonsters[i] = null;//Delete monsters that die
 			if(levelMonsters[i] != null)gObject[i].draw(canvas);//Draws all alive monsters in the level
-		}
+		}*/
 		animatedElaineObject.draw(canvas);
 		player.draw(canvas);
 	}
@@ -127,23 +127,23 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		player.update();
 		
 		if (input.up) {
-			player.setCorrectSprites("up");
+			player.setCorrectSprites(Player.Direction.UP);
 			y_screen_pos --;
 		}
 		if (input.down) {
-			player.setCorrectSprites("down");
+			player.setCorrectSprites(Player.Direction.DOWN);
 			y_screen_pos ++;
 		}
 		if (input.left) {
-			player.setCorrectSprites("left");
+			player.setCorrectSprites(Player.Direction.LEFT);
 			x_screen_pos --;
 		}		
 		if (input.right) {
-			player.setCorrectSprites("right");
+			player.setCorrectSprites(Player.Direction.RIGHT);
 			x_screen_pos ++;
 		}
 		if (input.idle) {
-			player.setCorrectSprites("idle"); // cheat
+			player.setCorrectSprites(Player.Direction.IDLE); // cheat
 		}
 	}
 

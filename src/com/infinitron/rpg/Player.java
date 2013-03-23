@@ -1,6 +1,11 @@
 package com.infinitron.rpg;
 
-public class Player extends GameObject{
+public class Player extends GameObject {
+
+	public enum Direction {
+		UP, DOWN, LEFT, RIGHT, IDLE
+	}
+	
 	private final int max_hp;
 	private int hp;
 	private Item[] inventory;
@@ -56,15 +61,15 @@ public class Player extends GameObject{
 		runningTime += frameTime;
 	}
 	
-	public int setCorrectSprites(String movement) { // Working off which Row to get
+	public int setCorrectSprites(Player.Direction d) { // Working off which Row to get
 		idle = false;
-		if(movement.equals("up"))
+		if (d == Player.Direction.UP)
 			rowSprite = 0;
-		else if(movement.equals("down"))
+		else if (d == Player.Direction.DOWN)
 			rowSprite = 2;
-		else if(movement.equals("left"))
+		else if (d == Player.Direction.LEFT)
 			rowSprite = 3;
-		else if(movement.equals("right"))
+		else if (d == Player.Direction.RIGHT)
 			rowSprite = 1;
 		else
 			idle = true; // idle
