@@ -1,5 +1,9 @@
 package com.infinitron.rpg;
-
+/*
+ * A class representing monsters in the game. Monsters have
+ * a certain amount of health along with values for how strong
+ * they are nad how difficult they are to kill
+ */
 public class Monster extends GameObject{
 	private final int max_hp;
 	private int hp;
@@ -20,21 +24,24 @@ public class Monster extends GameObject{
 	public void update(){
 		
 	}
-	
-//	public void takeTurn(){
-//		
-//	}
-	//Get monsters attack and players defense
-	//Calculate damage, ensuring that it is always at least 1 no matter
-	//how high the player's defense and pass this to the player class
+	/*
+	 * Get monsters attack and players defense
+	 * Calculate damage, ensuring that it is always at least 1 no matter
+	 * how high the player's defense and pass this to the player class
+	 */
 	public void attack(){
 		int result = attack - player.getDefense();
 		if(result <= 0)result = 1;
 		player.takeDamage(result);
 	}
-	
+	/*
+	 * Represents a monster taking damage, where
+	 * hp is reduced. If hp goes below 0 then it is
+	 * reset to zero
+	 */
 	public void takeDamage(int damage){
 		hp -= damage;
+		if(hp < 0)hp = 0;
 	}
 	
 	public void heal(){

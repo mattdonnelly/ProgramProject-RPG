@@ -1,8 +1,11 @@
 package com.infinitron.rpg;
 
 import android.graphics.Canvas;
-import android.view.MotionEvent;
-
+/*
+ * A class that represents an object in the game with attributes that give
+ * an object an x and y co-ordinate in the world along with the name of the object
+ * and its associated sprite for when it's drawn to the screen
+ */
 public class GameObject {
 	
 	protected int x, y;
@@ -42,8 +45,6 @@ public class GameObject {
 		
 	}
 
-	public void doTouch(MotionEvent event) {
-		// TODO Auto-generated method stub
-		
+	public void doTouch(String s) {
 	}
 }

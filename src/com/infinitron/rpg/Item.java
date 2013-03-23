@@ -1,5 +1,7 @@
 package com.infinitron.rpg;
-
+/*
+ * A class representing items in the game
+ */
 public class Item extends GameObject{
 	protected final int level;
 	protected int state;

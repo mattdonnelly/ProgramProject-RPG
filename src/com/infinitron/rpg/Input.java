@@ -1,11 +1,13 @@
 package com.infinitron.rpg;
 
 import android.view.MotionEvent;
-
+/*
+ * A class that represents user input, controlling the player character etc
+ */
 public class Input {
 	
 	public boolean pressed_down;
-	public boolean up, down, left, right;
+	public boolean up, down, left, right, idle = true;
 	private int screen_width, screen_height;
 	
 	public Input (int screen_width, int screen_height) {
@@ -21,7 +23,9 @@ public class Input {
 	public void update() {
 		
 	}
-	
+	public String setMotion(String s) {
+		return s;
+	}
 	public boolean onTouchEvent(MotionEvent event) {
 		if (pressed_down == true) {
     		pressed_down = false;
@@ -33,7 +37,9 @@ public class Input {
 	        case MotionEvent.ACTION_DOWN:
 	        	pressed_down = true;
 	        case MotionEvent.ACTION_MOVE:
+	        	this.idle = false;
 	        	if (x > 0 && x < screen_width / 3) {
+	        		
 	        		left = true;
 	        	} else {
 	        		left = false;
@@ -57,6 +63,7 @@ public class Input {
 	        case MotionEvent.ACTION_UP:
 	        	pressed_down = false;
 	        	up = down = left = right = false;
+	        	this.idle = true;
 	        	break;
 	    }
 	    return true;

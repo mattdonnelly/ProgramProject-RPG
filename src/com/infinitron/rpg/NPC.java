@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
-import android.view.MotionEvent;
 
 public class NPC extends GameObject {
 	private final String text;
@@ -28,20 +27,6 @@ public class NPC extends GameObject {
 		bubble_width = paint.measureText(text);
 		src = new Rect(0,0,47,38);
 	}
-
-	// getters and setters
-	public boolean isState() {
-		return state;
-	}
-
-	public void setState(boolean state) {
-		this.state = state;
-	}
-
-	public String getText() {
-		return text;
-	}
-
 	public void update(Canvas canvas) {
 		// change text - possibly have an on touch handler
 		/**
@@ -58,12 +43,19 @@ public class NPC extends GameObject {
 	}
 
 	@Override
-	public void doTouch(MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			/**
-			 * for(int i = 0; i < NPC.length(); i++) { find NPC touched }
-			 */
+	public void doTouch(String s) {
+		
+	}
+	// getters and setters
+	public boolean isState() {
+		return state;
+	}
 
-		}
+	public void setState(boolean state) {
+		this.state = state;
+	}
+
+	public String getText() {
+		return text;
 	}
 }
