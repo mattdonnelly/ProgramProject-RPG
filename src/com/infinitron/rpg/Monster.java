@@ -2,17 +2,17 @@ package com.infinitron.rpg;
 /*
  * A class representing monsters in the game. Monsters have
  * a certain amount of health along with values for how strong
- * they are nad how difficult they are to kill
+ * they are and how difficult they are to kill
  */
-public class Monster extends GameObject{
+public class Monster extends AnimatedGameObject{
 	private final int max_hp;
 	private int hp;
 	private final int attack;
 	private final int defense;
 	private Player player;
 	
-	public Monster(String name, Sprite sprite, int xPos, int yPos, int _max_hp, int _hp, int _attack, int _defense){
-		super(name, sprite, xPos, yPos);
+	public Monster(String name, Sprite[] sprite, int xPos, int yPos, int _max_hp, int _hp, int _attack, int _defense, int updateTime, int frameTime){
+		super(name, sprite, xPos, yPos, updateTime, frameTime);
 		max_hp = _max_hp;
 		hp = _hp;
 		attack = _attack;
