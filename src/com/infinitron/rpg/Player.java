@@ -1,6 +1,6 @@
 package com.infinitron.rpg;
 
-public class Player extends GameObject {
+public class Player extends AnimatedGameObject {
 
 	public enum State {
 		UP, DOWN, LEFT, RIGHT, IDLE
@@ -13,71 +13,108 @@ public class Player extends GameObject {
 	private Monster monster;
 	private Weapon weapon;
 	private Armor armor;
-	private Sprite[][] sprites;
-	private int currentSprite;
-	private int updateTime;
-	private int frameTime;
-	private int runningTime;
-	private int rowSprite = 0;
 	private Player.State state;
-	private boolean idle = true;
+	private boolean idle;
+	private boolean attacking;
 	private int lastX, lastY;
-	
-	public Player(String _name, Sprite _sprite, int _xPos, int _yPos, int _max_hp, int _hp, Item[] _inventory){
-		super(_name, _sprite, _xPos, _yPos);
-		max_hp = _max_hp;
-		hp = _hp;
-		inventory = new Item[_inventory.length];
-		for(int i = 0; i < inventory.length; i++){
-			inventory[i] = _inventory[i];
-		}			
-	}
+	private Sprite[][] playerSprites;
+	private int moveAdjust;
 	
 	public Player(String name, Sprite[][] sprites, int x, int y, int _max_hp, int updateTime, int frameTime) {
-		super(name, sprites[0][0], x, y);
-		this.sprites = sprites;
-		this.currentSprite = 0; // sprite in row
-		this.rowSprite = 0; // correct direction to face
-		this.updateTime = updateTime;
-		this.frameTime = frameTime;
-		this.runningTime = 0;
+		super(name, sprites[0], x, y, updateTime, frameTime);
+		this.playerSprites = sprites;
+		this.idle = true;
 		this.max_hp = _max_hp;
 		this.lastX = x;
 		this.lastY = y;
-	}
-
-	@Override
-
-	public void update() {
-		if (!idle) {
-			if (runningTime > updateTime) {
-				runningTime = 0;
-				currentSprite++;
-
-				if (currentSprite >= sprites.length)
-					currentSprite = 0;
-
-				this.sprite = sprites[rowSprite][currentSprite];
-			}
-		} else {
-			this.sprite = sprites[rowSprite][0];
-		}
-		runningTime += frameTime;
+		this.state = Player.State.DOWN;
+		this.moveAdjust = (Level.TILE_SIZE * 2);
 	}
 	
-	public int setCorrectSprites(Player.State s) { // Working off which Row to get
-		idle = false;
-		if (s == Player.State.UP)
-			rowSprite = 0;
-		else if (s == Player.State.DOWN)
-			rowSprite = 2;
-		else if (s == Player.State.LEFT)
-			rowSprite = 3;
-		else if (s == Player.State.RIGHT)
-			rowSprite = 1;
-		else
-			idle = true; // idle
-		return rowSprite;
+	@Override
+	public void update() {
+		if (idle) {
+			if (this.state == Player.State.UP) {
+				this.sprite = playerSprites[4][1];
+			} else if (this.state == Player.State.RIGHT) {
+				this.sprite = playerSprites[5][1];
+			} else if (this.state == Player.State.DOWN) {
+				this.sprite = playerSprites[6][1];
+			} else if (this.state == Player.State.LEFT) {
+				this.sprite = playerSprites[7][1];
+			}
+		} else {
+			if (this.state == Player.State.UP) {
+				this.sprites = playerSprites[0];
+				y--;
+				
+				if (y <= (lastY - moveAdjust))
+					idle = true;
+				
+			} else if (this.state == Player.State.RIGHT) {
+				this.sprites = playerSprites[1];
+				x++;
+				
+				if (x >= (lastX + moveAdjust))
+					idle = true;
+				
+			} else if (this.state == Player.State.DOWN) {
+				this.sprites = playerSprites[2];
+				y++;
+				
+				if (y >= (lastY + moveAdjust))
+					idle = true;
+				
+			} else if (this.state == Player.State.LEFT) {
+				this.sprites = playerSprites[3];
+				x--;
+				
+				if (x <= (lastX - moveAdjust))
+					idle = true;
+			}
+			
+			super.update();
+		}
+	}
+	
+	public void moveUp() {
+		if (idle) {
+			lastX = x;
+			lastY = y;
+			idle = false;
+			state = Player.State.UP;
+			this.sprite = playerSprites[4][1];
+		}
+	}
+	
+	public void moveRight() {
+		if (idle) {
+			lastX = x;
+			lastY = y;
+			idle = false;
+			state = Player.State.RIGHT;
+			this.sprite = playerSprites[5][1];
+		}
+	}
+
+	public void moveDown() {
+		if (idle) {
+			lastX = x;
+			lastY = y;
+			idle = false;
+			state = Player.State.DOWN;
+			this.sprite = playerSprites[6][1];
+		}
+	}
+	
+	public void moveLeft() {
+		if (idle) {
+			lastX = x;
+			lastY = y;
+			idle = false;
+			state = Player.State.LEFT;
+			this.sprite = playerSprites[7][1];
+		}
 	}
 	
 	//Get players weapon damage and monster's defense

@@ -50,12 +50,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	public GridSpriteSheet p1 = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.player16x18),16,18);
 	
 	public Sprite[][] playerSprites = {
-			{new Sprite(p1, 0,0), new Sprite(p1, 0,1), new Sprite(p1, 0,2), new Sprite(p1, 0,3)},
-			{new Sprite(p1, 1,0), new Sprite(p1, 1,1), new Sprite(p1, 1,2), new Sprite(p1, 1,3)},
-			{new Sprite(p1, 2,0), new Sprite(p1, 2,1), new Sprite(p1, 2,2), new Sprite(p1, 2,3)},
-			{new Sprite(p1, 3,0), new Sprite(p1, 3,1), new Sprite(p1, 3,2), new Sprite(p1, 3,3)}
+			{new Sprite(p1, 0,0), new Sprite(p1, 0,1)},
+			{new Sprite(p1, 1,0), new Sprite(p1, 1,1)},
+			{new Sprite(p1, 2,0), new Sprite(p1, 2,1)},
+			{new Sprite(p1, 3,0), new Sprite(p1, 3,1)},
+			{new Sprite(p1, 4,0), new Sprite(p1, 4,1)},
+			{new Sprite(p1, 5,0), new Sprite(p1, 5,1)},
+			{new Sprite(p1, 6,0), new Sprite(p1, 6,1)},
+			{new Sprite(p1, 7,0), new Sprite(p1, 7,1)}
 			};
-	public Player player = new Player("Elaine", playerSprites, 110, 110, 500, 100, GameThread.CYCLE_TIME);
+	public Player player = new Player("Elaine", playerSprites, 160, 160, 500, 200, GameThread.CYCLE_TIME);
 
 	public Level level = new Level(BitmapFactory.decodeResource(getResources(), R.drawable.map_image), readTxt(getResources().openRawResource(R.raw.map_50x50)), 50, 50);
 	
@@ -127,19 +131,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		player.update();
 		
 		if (input.up) {
-			player.setCorrectSprites(Player.State.UP);
+			player.moveUp();
 			//y_screen_pos --;
 		} else if (input.down) {
-			player.setCorrectSprites(Player.State.DOWN);
+			player.moveDown();
 			//y_screen_pos ++;
 		} else if (input.left) {
-			player.setCorrectSprites(Player.State.LEFT);
+			player.moveLeft();
 			//x_screen_pos --;
 		} else if (input.right) {
-			player.setCorrectSprites(Player.State.RIGHT);
+			player.moveRight();
 			//x_screen_pos ++;
-		} else if (input.idle) {
-			player.setCorrectSprites(Player.State.IDLE); // cheat
 		}
 	}
 
