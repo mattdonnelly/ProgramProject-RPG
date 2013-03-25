@@ -49,19 +49,19 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	// Another bleedin' test -> Animated Player Object Test
 	public GridSpriteSheet p1 = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.player16x18),16,18);
 	
-	public Sprite[][] playerSprites = {
-			{new Sprite(p1, 0,0), new Sprite(p1, 0,1)},
-			{new Sprite(p1, 1,0), new Sprite(p1, 1,1)},
-			{new Sprite(p1, 2,0), new Sprite(p1, 2,1)},
-			{new Sprite(p1, 3,0), new Sprite(p1, 3,1)},
-			{new Sprite(p1, 4,0), new Sprite(p1, 4,1)},
-			{new Sprite(p1, 5,0), new Sprite(p1, 5,1)},
-			{new Sprite(p1, 6,0), new Sprite(p1, 6,1)},
-			{new Sprite(p1, 7,0), new Sprite(p1, 7,1)}
-			};
-	public Player player = new Player("Elaine", playerSprites, 160, 160, 500, 200, GameThread.CYCLE_TIME);
+	public Sprite[][] playerSprites = { {new Sprite(p1, 0,0), new Sprite(p1, 0,1)},
+										{new Sprite(p1, 1,0), new Sprite(p1, 1,1)},
+										{new Sprite(p1, 2,0), new Sprite(p1, 2,1)},
+										{new Sprite(p1, 3,0), new Sprite(p1, 3,1)},
+										{new Sprite(p1, 4,0), new Sprite(p1, 4,1)},
+										{new Sprite(p1, 5,0), new Sprite(p1, 5,1)},
+										{new Sprite(p1, 6,0), new Sprite(p1, 6,1)},
+										{new Sprite(p1, 7,0), new Sprite(p1, 7,1)} };
+	
+	public Player player = new Player("Elaine", playerSprites, 160, 160, 500, 80, GameThread.CYCLE_TIME);
 
-	public Level level = new Level(BitmapFactory.decodeResource(getResources(), R.drawable.map_image), readTxt(getResources().openRawResource(R.raw.map_50x50)), 50, 50);
+	//public Level level = new Level(BitmapFactory.decodeResource(getResources(), R.drawable.map_image), readTxt(getResources().openRawResource(R.raw.map_50x50)), 50, 50);
+	public Level level;
 	
 	//Replaces Monster Sprite Rendering by instead doing it for several monsters, chosen from the levelMonsters array
 	//NOTE parameters are incorrect, have chosen temporary values
@@ -81,6 +81,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
 	public Game(Context context) {
 		super(context);
+		level = new Level(context);
 		init();
 	}
 
@@ -90,6 +91,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		setFocusable(true);
 
 		gameThread = new GameThread(this);
+		
 	}
 
 	public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -117,7 +119,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public void draw(Canvas canvas) {
-		level.draw(canvas, x_screen_pos, y_screen_pos);
+		level.draw(canvas);
 		/*for(int i = 0; i < levelMonsters.length;i++){
 			if(levelMonsters[i].getHp() == 0)levelMonsters[i] = null;//Delete monsters that die
 			if(levelMonsters[i] != null)gObject[i].draw(canvas);//Draws all alive monsters in the level

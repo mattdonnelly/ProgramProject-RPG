@@ -1,22 +1,22 @@
 package com.infinitron.rpg;
 
+import android.graphics.Canvas; 
+
 public class Tile {
 	
-	public static final int SIZE = 16;
+	private Sprite tile;
+	private boolean isSolid;
+
+	public Tile(Sprite tile, boolean isSolid) {
+		this.tile = tile;
+		this.isSolid = isSolid;
+	}
 	
-	private boolean is_solid;
-	private String name;
-			
-	public Tile(String name, boolean is_solid) {
-		this.name = name;
-		this.is_solid = is_solid;
+	public void draw(Canvas canvas, int x, int y) {
+		tile.draw(x, y, canvas);
 	}
 	
 	public boolean isSolid() {
-		return is_solid;
+		return isSolid;
 	}
-	public String getName(){
-		return name;
-	}
-	
 }

@@ -18,7 +18,7 @@ public class GridSpriteSheet extends SpriteSheet {
 		this.rows = sheet.getHeight() / tileHeight;
 		this.size = columns * rows;
 	}
-	
+		
 	public Bitmap cut(int index) {
 		int selectedColumn = 0;
 		if (this.columns != 0)
@@ -26,7 +26,8 @@ public class GridSpriteSheet extends SpriteSheet {
 		
 		int selectedRow = 0;
 		if (this.rows != 0)
-			selectedRow = (index - selectedColumn) / this.rows;				
+			selectedRow = (index - selectedColumn) / this.rows;	
+		
 		return Bitmap.createBitmap(this.sheet, selectedColumn * tileWidth, selectedRow * tileHeight, this.tileWidth, this.tileHeight);
 	}
 	

@@ -1,5 +1,7 @@
 package com.infinitron.rpg;
 
+import android.graphics.Canvas;
+
 public class Player extends AnimatedGameObject {
 
 	public enum State {
@@ -15,7 +17,6 @@ public class Player extends AnimatedGameObject {
 	private Armor armor;
 	private Player.State state;
 	private boolean idle;
-	private boolean attacking;
 	private int lastX, lastY;
 	private Sprite[][] playerSprites;
 	private int moveAdjust;
@@ -28,7 +29,7 @@ public class Player extends AnimatedGameObject {
 		this.lastX = x;
 		this.lastY = y;
 		this.state = Player.State.DOWN;
-		this.moveAdjust = (Level.TILE_SIZE * 2);
+		this.moveAdjust = Level.TILE_SIZE;
 	}
 	
 	@Override
@@ -75,6 +76,11 @@ public class Player extends AnimatedGameObject {
 			
 			super.update();
 		}
+	}
+	
+	@Override
+	public void draw(Canvas canvas) {
+		canvas.drawBitmap(sprite.getImage(), x, y-2, null);
 	}
 	
 	public void moveUp() {
