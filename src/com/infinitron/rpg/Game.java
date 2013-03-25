@@ -37,22 +37,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	public Sprite[] animatedElaineSprites = {new Sprite(elaine, 0), new Sprite(elaine, 1), new Sprite(elaine, 2), new Sprite(elaine, 3), new Sprite(elaine, 4)};
 	public AnimatedGameObject animatedElaineObject = new AnimatedGameObject("Elaine", animatedElaineSprites, 70, 70, 100, GameThread.CYCLE_TIME);
 	
-	// Another bleedin' test -> Animated Player Object Test
-	public GridSpriteSheet p1 = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.player16x18),16,18);
-	
-	public Sprite[][] playerSprites = {
-			{new Sprite(p1, 0,0), new Sprite(p1, 0,1)},
-			{new Sprite(p1, 1,0), new Sprite(p1, 1,1)},
-			{new Sprite(p1, 2,0), new Sprite(p1, 2,1)},
-			{new Sprite(p1, 3,0), new Sprite(p1, 3,1)},
-			{new Sprite(p1, 4,0), new Sprite(p1, 4,1)},
-			{new Sprite(p1, 5,0), new Sprite(p1, 5,1)},
-			{new Sprite(p1, 6,0), new Sprite(p1, 6,1)},
-			{new Sprite(p1, 7,0), new Sprite(p1, 7,1)}
-			};
-	public Player player = new Player("Elaine", playerSprites, 160, 160, 500, 200, GameThread.CYCLE_TIME);
-
-	public Level level;
+	public static Player player;
+	public static Level level;
 	
 	public Input input = new Input(Main.screen_width, Main.screen_height);
 	
@@ -64,6 +50,21 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		super(context);
 		init();
 		level = new Level(context);
+		
+		GridSpriteSheet p1 = new GridSpriteSheet(BitmapFactory.decodeResource(context.getResources(), R.drawable.player16x18),16,18);
+		
+		Sprite[][] playerSprites = {
+				{new Sprite(p1, 0,0), new Sprite(p1, 0,1)},
+				{new Sprite(p1, 1,0), new Sprite(p1, 1,1)},
+				{new Sprite(p1, 2,0), new Sprite(p1, 2,1)},
+				{new Sprite(p1, 3,0), new Sprite(p1, 3,1)},
+				{new Sprite(p1, 4,0), new Sprite(p1, 4,1)},
+				{new Sprite(p1, 5,0), new Sprite(p1, 5,1)},
+				{new Sprite(p1, 6,0), new Sprite(p1, 6,1)},
+				{new Sprite(p1, 7,0), new Sprite(p1, 7,1)}
+				};
+		
+		player = new Player("Elaine", playerSprites, 4, 4, 500, 200, GameThread.CYCLE_TIME);
 	}
 
 	public void init() {

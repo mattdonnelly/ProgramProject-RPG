@@ -17,17 +17,20 @@ public class Player extends AnimatedGameObject {
 	private Armor armor;
 	private Player.State state;
 	private boolean idle;
+	private int xTile, yTile;
 	private int lastX, lastY;
 	private Sprite[][] playerSprites;
 	private int moveAdjust;
 	
-	public Player(String name, Sprite[][] sprites, int x, int y, int _max_hp, int updateTime, int frameTime) {
-		super(name, sprites[0], x, y, updateTime, frameTime);
+	public Player(String name, Sprite[][] sprites, int xTile, int yTile, int _max_hp, int updateTime, int frameTime) {
+		super(name, sprites[0], xTile * Level.TILE_SIZE, yTile * Level.TILE_SIZE, updateTime, frameTime);
 		this.playerSprites = sprites;
 		this.idle = true;
 		this.max_hp = _max_hp;
-		this.lastX = x;
-		this.lastY = y;
+		this.xTile = xTile;
+		this.yTile = xTile;
+		this.lastX = this.x;
+		this.lastY = this.y;
 		this.state = Player.State.DOWN;
 		this.moveAdjust = Level.TILE_SIZE;
 	}
@@ -47,31 +50,43 @@ public class Player extends AnimatedGameObject {
 		} else {
 			if (this.state == Player.State.UP) {
 				this.sprites = playerSprites[0];
+
 				y--;
 				
-				if (y <= (lastY - moveAdjust))
+				if (y <= (lastY - moveAdjust)) {
 					idle = true;
+					yTile--;
+				}
 				
 			} else if (this.state == Player.State.RIGHT) {
 				this.sprites = playerSprites[1];
+				
 				x++;
 				
-				if (x >= (lastX + moveAdjust))
+				if (x >= (lastX + moveAdjust)) {
 					idle = true;
+					xTile++;
+				}
 				
 			} else if (this.state == Player.State.DOWN) {
 				this.sprites = playerSprites[2];
+
 				y++;
 				
-				if (y >= (lastY + moveAdjust))
+				if (y >= (lastY + moveAdjust)) {
 					idle = true;
+					yTile++;
+				}
 				
 			} else if (this.state == Player.State.LEFT) {
 				this.sprites = playerSprites[3];
+
 				x--;
 				
-				if (x <= (lastX - moveAdjust))
+				if (x <= (lastX - moveAdjust)) {
 					idle = true;
+					xTile--;
+				}
 			}
 			
 			super.update();
@@ -85,41 +100,53 @@ public class Player extends AnimatedGameObject {
 	
 	public void moveUp() {
 		if (idle) {
-			lastX = x;
-			lastY = y;
-			idle = false;
-			state = Player.State.UP;
 			this.sprite = playerSprites[4][1];
+			state = Player.State.UP;
+
+			if (Game.level.tileAtIndexIsSolid(this.xTile, this.yTile-1)) {
+				lastX = x;
+				lastY = y;
+				idle = false;
+			}
 		}
 	}
 	
 	public void moveRight() {
 		if (idle) {
-			lastX = x;
-			lastY = y;
-			idle = false;
-			state = Player.State.RIGHT;
 			this.sprite = playerSprites[5][1];
+			state = Player.State.RIGHT;
+			
+			if (Game.level.tileAtIndexIsSolid(this.xTile+1, this.yTile)) {
+				lastX = x;
+				lastY = y;
+				idle = false;
+			}
 		}
 	}
 
 	public void moveDown() {
 		if (idle) {
-			lastX = x;
-			lastY = y;
-			idle = false;
-			state = Player.State.DOWN;
 			this.sprite = playerSprites[6][1];
+			state = Player.State.DOWN;
+			
+			if (Game.level.tileAtIndexIsSolid(this.xTile, this.yTile+1)) {
+				lastX = x;
+				lastY = y;
+				idle = false;
+			}
 		}
 	}
 	
 	public void moveLeft() {
 		if (idle) {
-			lastX = x;
-			lastY = y;
-			idle = false;
-			state = Player.State.LEFT;
 			this.sprite = playerSprites[7][1];
+			state = Player.State.LEFT;
+			
+			if (Game.level.tileAtIndexIsSolid(this.xTile-1, this.yTile)) {
+				lastX = x;
+				lastY = y;
+				idle = false;
+			}
 		}
 	}
 	

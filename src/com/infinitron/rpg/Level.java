@@ -169,4 +169,9 @@ public class Level {
 	public void draw(Canvas canvas) {
 		canvas.drawBitmap(bufferedLevel, 0, 0, null);
 	}
+	
+	public boolean tileAtIndexIsSolid(int x, int y) {
+		int tileNumber = decorations[y][x];
+		return tileNumber == 9;
+	}
 }
