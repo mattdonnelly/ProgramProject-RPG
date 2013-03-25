@@ -72,9 +72,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		setFocusable(true);
 
 		gameThread = new GameThread(this);
-		
-<<<<<<< HEAD
-=======
+
 		makeMonsterSprites();
 		/* Get monsters to place in level. Done by randomly selecting monsters from the monsterCollection and
 		 * placing them in the array levelMonsters. Selects items from monster array at random with
@@ -83,7 +81,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		for(int i = 0; i < levelMonsters.length; i++){
 			levelMonsters[i] = monsterCollection[randNum.nextInt(monsterCollection.length)];
 		}
->>>>>>> b1f4e6315d758bc45afc7d43bdc3aa95bec052c9
 	}
 
 	public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -111,14 +108,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public void draw(Canvas canvas) {
-<<<<<<< HEAD
 		level.draw(canvas);
-		/*for(int i = 0; i < levelMonsters.length;i++){
-			if(levelMonsters[i].getHp() == 0)levelMonsters[i] = null;//Delete monsters that die
-			if(levelMonsters[i] != null)gObject[i].draw(canvas);//Draws all alive monsters in the level
-		}*/
-=======
-		level.draw(canvas, x_screen_pos, y_screen_pos);
+
+		//level.draw(canvas, x_screen_pos, y_screen_pos);
 		
 		for(int i = 0; i < levelMonsters.length; i++){
 			if(levelMonsters[i] != null){
@@ -126,7 +118,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 			}
 		}
 		
->>>>>>> b1f4e6315d758bc45afc7d43bdc3aa95bec052c9
 		animatedElaineObject.draw(canvas);
 		player.draw(canvas);
 	}
