@@ -134,16 +134,19 @@ public class Player extends AnimatedGameObject {
 			// player should die
 		}
 	}
+	
 	//Call potion object and add it's value to current hp. If current hp then
 	//exceeds max hp, it will be set to max hp
 	public void heal(){
 		hp += potion.getHpBoost();
 		if(hp > max_hp)hp = max_hp;
 	}
+	
 	// getters and setters
 	public int getDefense(){
 		return armor.getDefense();
 	}
+	
 	public int getMax_hp(){
 		return max_hp;
 	}

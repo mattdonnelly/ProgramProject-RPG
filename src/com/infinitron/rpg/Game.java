@@ -17,23 +17,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	private GameThread gameThread;
 	private Random randNum = new Random();
 	private Monster[] monsterCollection = new Monster[10];//Would then call createMonsters to fill array
+	public Monster[] levelMonsters = new Monster[4];// filled in init() by randomly picking from monsterCollection
 	private Item[][] itemCollection = new Item[3][10];//Would then call createItems to fill array
 	
 	/* TESTING SPRITE RENDERING */
-
-	// Monster sprite rendering
-	
-	
-	/* Get monsters to place in level. Done by randomly selecting monsters from the monsterCollection and
-	 * placing them in the array levelMonsters. Selects items from monster array at random with
-	 * max monster being array length exclusive. Only get four monsters for now.
-	 */
-/*	public Monster[] levelMonsters = {monsterCollection[randNum.nextInt(monsterCollection.length)], 
-									  monsterCollection[randNum.nextInt(monsterCollection.length)],
-									  monsterCollection[randNum.nextInt(monsterCollection.length)],
-									  monsterCollection[randNum.nextInt(monsterCollection.length)]};*/
-	public Monster[] levelMonsters = new Monster[4];
-	
 	
 	// Test sprite rendering
 	public GridSpriteSheet elaine = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.walk_elaine), 30, 47);
@@ -84,12 +71,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		setFocusable(true);
 
 		gameThread = new GameThread(this);
+		
 		makeMonsterSprites();
-		levelMonsters[0] = monsterCollection[randNum.nextInt(monsterCollection.length)]; 
-		levelMonsters[1] = monsterCollection[randNum.nextInt(monsterCollection.length)];
-		levelMonsters[2] = monsterCollection[randNum.nextInt(monsterCollection.length)];
-		levelMonsters[3] = monsterCollection[randNum.nextInt(monsterCollection.length)];
-		System.out.println("Made sprites");
+		/* Get monsters to place in level. Done by randomly selecting monsters from the monsterCollection and
+		 * placing them in the array levelMonsters. Selects items from monster array at random with
+		 * max monster being array length exclusive. Only get four monsters for now.
+		 */
+		for(int i = 0; i < levelMonsters.length; i++){
+			levelMonsters[i] = monsterCollection[randNum.nextInt(monsterCollection.length)];
+		}
 	}
 
 	public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -120,9 +110,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		level.draw(canvas, x_screen_pos, y_screen_pos);
 		
 		for(int i = 0; i < levelMonsters.length; i++){
-			if(((Monster) levelMonsters[i]).getHp() <= 0){
-				levelMonsters[i] = null;	//Delete monsters that die
-			}
 			if(levelMonsters[i] != null){
 				levelMonsters[i].draw(canvas);	//Draws all alive monsters in the level
 			}
@@ -138,6 +125,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		for(int i = 0; i < levelMonsters.length; i++){
 			if(levelMonsters[i] != null){
 				levelMonsters[i].update();
+				// Delete dead monsters by setting them to NULL
+				if(((Monster) levelMonsters[i]).getHp() <= 0){
+					levelMonsters[i] = null;
+				}
 			}
 		}
 		
@@ -177,7 +168,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	//Replaces Monster Sprite Rendering by instead doing it for several monsters, chosen from the levelMonsters array
 	//NOTE parameters are incorrect, have chosen temporary values
 	public void makeMonsterSprites(){
-		GridSpriteSheet monsterSheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.monster_inc), 100, 100);
+		GridSpriteSheet monsterSheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.monster_inc_smaller), 25, 25);
 		Sprite[] animatedMonsterSprites = {new Sprite(monsterSheet, 0), new Sprite(monsterSheet, 1),new Sprite(monsterSheet, 2),
 										   new Sprite(monsterSheet, 3), new Sprite(monsterSheet, 4)};
 		createMonsters(animatedMonsterSprites);
@@ -187,17 +178,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	//Monster extends GameObject and hence has the following attributes: String name, Sprite sprite, int xPos, int yPos, int _max_hp, int _hp, int _attack, int _defense
 	//The following method will take the array monster collection and manually fill it with monsters
 	public void createMonsters(Sprite[] sprite){
-										  //Name        //Sprite //xPos//yPos//maxHp//hp  //att//def //updateTime //frameTime
-		monsterCollection[0] = new Monster("Rat",		sprite,		0,	0,	1,		1,		1,	1, 100, GameThread.CYCLE_TIME);
-		monsterCollection[1] = new Monster("Kobold",	sprite,		10,	30,	5,		5,		1,	2, 100, GameThread.CYCLE_TIME);
-		monsterCollection[2] = new Monster("Goblin",	sprite,		20,	60,	5,		5,		2,	2, 100, GameThread.CYCLE_TIME);
-		monsterCollection[3] = new Monster("Zombie",	sprite,		30,	90,	7,		7,		2,	3, 100, GameThread.CYCLE_TIME);
-		monsterCollection[4] = new Monster("Wolf",		sprite,		40,	120,	8,		8,		4,	3, 100, GameThread.CYCLE_TIME);
-		monsterCollection[5] = new Monster("Gnome",		sprite,		50,	150,	3,		3,		6,	1, 100, GameThread.CYCLE_TIME);
-		monsterCollection[6] = new Monster("Orc",		sprite,		60,	180,	8,		8,		3,	4, 100, GameThread.CYCLE_TIME);
-		monsterCollection[7] = new Monster("Skeleton",	sprite,		70,	210,	4,		4,		2,	3, 100, GameThread.CYCLE_TIME);
-		monsterCollection[8] = new Monster("Spider",	sprite,		80,	240,	2,		2,		1,	1, 100, GameThread.CYCLE_TIME);
-		monsterCollection[9] = new Monster("Vampire",	sprite,		90,	270,	9,		9,		5,	5, 100, GameThread.CYCLE_TIME);
+										  //Name        //Sprite 	//xPos	//yPos	//maxHp	//hp	//att	//def 	//updateTime 	//frameTime
+		monsterCollection[0] = new Monster("Rat",		sprite,		5,		5,		1,		1,		1,		1, 		100, 			GameThread.CYCLE_TIME);
+		monsterCollection[1] = new Monster("Kobold",	sprite,		10,		30,		5,		5,		1,		2, 		100, 			GameThread.CYCLE_TIME);
+		monsterCollection[2] = new Monster("Goblin",	sprite,		20,		60,		5,		5,		2,		2, 		100, 			GameThread.CYCLE_TIME);
+		monsterCollection[3] = new Monster("Zombie",	sprite,		30,		90,		7,		7,		2,		3, 		100, 			GameThread.CYCLE_TIME);
+		monsterCollection[4] = new Monster("Wolf",		sprite,		40,		120,	8,		8,		4,		3, 		100,			GameThread.CYCLE_TIME);
+		monsterCollection[5] = new Monster("Gnome",		sprite,		50,		150,	3,		3,		6,		1, 		100,		 	GameThread.CYCLE_TIME);
+		monsterCollection[6] = new Monster("Orc",		sprite,		60,		180,	8,		8,		3,		4, 		100, 			GameThread.CYCLE_TIME);
+		monsterCollection[7] = new Monster("Skeleton",	sprite,		70,		210,	4,		4,		2,		3, 		100, 			GameThread.CYCLE_TIME);
+		monsterCollection[8] = new Monster("Spider",	sprite,		80,		240,	2,		2,		1,		1, 		100, 			GameThread.CYCLE_TIME);
+		monsterCollection[9] = new Monster("Vampire",	sprite,		90,		270,	9,		9,		5,		5, 		100, 			GameThread.CYCLE_TIME);
 																//monsterCollection[0].getXPos() , monsterCollection[0].getYPos()
 																//was trying to get XPos and YPos of NULL objects
 	}
