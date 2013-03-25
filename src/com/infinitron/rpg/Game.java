@@ -40,18 +40,18 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	// Another bleedin' test -> Animated Player Object Test
 	public GridSpriteSheet p1 = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.player16x18),16,18);
 	
-	public Sprite[][] playerSprites = { {new Sprite(p1, 0,0), new Sprite(p1, 0,1)},
-										{new Sprite(p1, 1,0), new Sprite(p1, 1,1)},
-										{new Sprite(p1, 2,0), new Sprite(p1, 2,1)},
-										{new Sprite(p1, 3,0), new Sprite(p1, 3,1)},
-										{new Sprite(p1, 4,0), new Sprite(p1, 4,1)},
-										{new Sprite(p1, 5,0), new Sprite(p1, 5,1)},
-										{new Sprite(p1, 6,0), new Sprite(p1, 6,1)},
-										{new Sprite(p1, 7,0), new Sprite(p1, 7,1)} };
-	
-	public Player player = new Player("Elaine", playerSprites, 160, 160, 500, 80, GameThread.CYCLE_TIME);
+	public Sprite[][] playerSprites = {
+			{new Sprite(p1, 0,0), new Sprite(p1, 0,1)},
+			{new Sprite(p1, 1,0), new Sprite(p1, 1,1)},
+			{new Sprite(p1, 2,0), new Sprite(p1, 2,1)},
+			{new Sprite(p1, 3,0), new Sprite(p1, 3,1)},
+			{new Sprite(p1, 4,0), new Sprite(p1, 4,1)},
+			{new Sprite(p1, 5,0), new Sprite(p1, 5,1)},
+			{new Sprite(p1, 6,0), new Sprite(p1, 6,1)},
+			{new Sprite(p1, 7,0), new Sprite(p1, 7,1)}
+			};
+	public Player player = new Player("Elaine", playerSprites, 160, 160, 500, 200, GameThread.CYCLE_TIME);
 
-	//public Level level = new Level(BitmapFactory.decodeResource(getResources(), R.drawable.map_image), readTxt(getResources().openRawResource(R.raw.map_50x50)), 50, 50);
 	public Level level;
 	
 	public Input input = new Input(Main.screen_width, Main.screen_height);
@@ -62,8 +62,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
 	public Game(Context context) {
 		super(context);
-		level = new Level(context);
 		init();
+		level = new Level(context);
 	}
 
 	public void init() {
@@ -72,7 +72,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		setFocusable(true);
 
 		gameThread = new GameThread(this);
-
+		
 		makeMonsterSprites();
 		/* Get monsters to place in level. Done by randomly selecting monsters from the monsterCollection and
 		 * placing them in the array levelMonsters. Selects items from monster array at random with
@@ -109,8 +109,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public void draw(Canvas canvas) {
 		level.draw(canvas);
-
-		//level.draw(canvas, x_screen_pos, y_screen_pos);
 		
 		for(int i = 0; i < levelMonsters.length; i++){
 			if(levelMonsters[i] != null){
@@ -148,24 +146,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 			player.moveRight();
 			//x_screen_pos ++;
 		}
-	}
-
-	private String readTxt(InputStream is) {
-
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		int i;
-		try {
-			i = is.read();
-			while (i != -1) {
-				byteArrayOutputStream.write(i);
-				i = is.read();
-			}
-			is.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	  	return byteArrayOutputStream.toString();
 	}
 
 	//Replaces Monster Sprite Rendering by instead doing it for several monsters, chosen from the levelMonsters array
@@ -282,4 +262,3 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
     
 }
-
