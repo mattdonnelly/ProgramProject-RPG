@@ -20,10 +20,10 @@ public class Monster extends AnimatedGameObject{
 	}
 
 	@Override
-
 	public void update(){
-		
+		super.update();
 	}
+	
 	/*
 	 * Get monsters attack and players defense
 	 * Calculate damage, ensuring that it is always at least 1 no matter
