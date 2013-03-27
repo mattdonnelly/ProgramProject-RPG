@@ -32,10 +32,10 @@ public class GameRenderer {
 	    }
     }
 
-    public void drawFrame(Canvas canvas) {
+    public void drawFrame(Canvas canvas, Level level) {
 	    synchronized(gameObjects){
 		    for (GameObject object : gameObjects) {
-		    	object.draw(canvas);
+		    	object.draw(canvas, level);
 		    }
 	    }
 

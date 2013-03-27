@@ -113,17 +113,18 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		
 		for(int i = 0; i < levelMonsters.length; i++){
 			if(levelMonsters[i] != null){
-				levelMonsters[i].draw(canvas);	//Draws all alive monsters in the level
+				levelMonsters[i].draw(canvas, level);	//Draws all alive monsters in the level
 			}
 		}
 		
-		animatedElaineObject.draw(canvas);
-		player.draw(canvas);
+		animatedElaineObject.draw(canvas, level);
+		player.draw(canvas, level);
 	}
 
 	public void update() {
 		animatedElaineObject.update();
 		player.update();
+		level.update(player);
 		for(int i = 0; i < levelMonsters.length; i++){
 			if(levelMonsters[i] != null){
 				levelMonsters[i].update();

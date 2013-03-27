@@ -19,8 +19,8 @@ public class GameObject {
 		this.y = _y;
 	}
 
-	public void draw(Canvas canvas) {
-		canvas.drawBitmap(sprite.getImage(), x, y, null);
+	public void draw(Canvas canvas, Level level) {
+		canvas.drawBitmap(sprite.getImage(), x - (level.getScreenLeft() * Level.TILE_SIZE),  y - (level.getScreenTop() * Level.TILE_SIZE), null);
 	}
 	
 	public void loadImage(){

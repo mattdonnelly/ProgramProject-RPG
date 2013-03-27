@@ -1,6 +1,7 @@
 package com.infinitron.rpg;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 public class Player extends AnimatedGameObject {
 
@@ -94,8 +95,8 @@ public class Player extends AnimatedGameObject {
 	}
 	
 	@Override
-	public void draw(Canvas canvas) {
-		canvas.drawBitmap(sprite.getImage(), x, y-2, null);
+	public void draw(Canvas canvas, Level level) {
+		canvas.drawBitmap(sprite.getImage(), x - (level.getScreenLeft() * Level.TILE_SIZE), y - (level.getScreenTop() * Level.TILE_SIZE) - 2, null);
 	}
 	
 	public void moveUp() {

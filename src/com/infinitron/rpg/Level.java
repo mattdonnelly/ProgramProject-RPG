@@ -12,6 +12,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 
 public class Level {
@@ -142,25 +143,54 @@ public class Level {
 	    return result;
 	}
 	
-	public void setOrigin(int x, int y) {
-		if (x > columns)
-			xOffset = columns - 16;
-		else
-			xOffset = x;
+	public void update(Player player) {
+
+		int new_origion_x = xOffset;
+		if (player.getXPos() < (xOffset * 16)) {
+			new_origion_x = xOffset - ((Main.screen_width / 2) / 16);
+		} else if (player.getXPos() > (xOffset * 16) + (Main.screen_width / 2)) {
+			new_origion_x = xOffset + ((Main.screen_width / 2) / 16);
+		}
 		
-		if (y > rows)
-			yOffset = rows - 16;
-		else
+		int new_origion_y = yOffset;
+		if (player.getYPos() < (yOffset * 16)) {
+			new_origion_y = yOffset - ((Main.screen_height / 2) / 16);
+		} else if (player.getYPos() > (yOffset * 16) + (Main.screen_height / 2)) {
+			new_origion_y = yOffset + ((Main.screen_height / 2) / 16);
+		}
+		
+		// only update origion if it needs to be changed
+		if (new_origion_x != xOffset || new_origion_y != yOffset) {
+			setOrigin(new_origion_x, new_origion_y);
+		}
+	}
+	
+	public void setOrigin(int x, int y) {
+
+		if (x < 0) {
+			xOffset = 0;
+		} else if (x + columns > terrain[0].length) {
+			xOffset = terrain[0].length - columns;
+		} else {
+			xOffset = x;
+		}
+		
+		if (y < 0) {
+			yOffset = 0;
+		} else if (y + rows > terrain.length) {
+			yOffset = terrain.length - rows;
+		} else {
 			yOffset = y;
+		}
 		
 		Canvas bufferCanvas = new Canvas(bufferedLevel);
 		
-		for (int i = yOffset; i < rows + yOffset; i++) {
-			for (int j = xOffset; j < columns + xOffset; j++) {		
-				int tileNumber = terrain[i][j];
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				int tileNumber = terrain[i + yOffset][j + xOffset];
 				tileLookup[tileNumber].draw(bufferCanvas, j * TILE_SIZE, i * TILE_SIZE);
 				
-				int decorationNumber = decorations[i][j];
+				int decorationNumber = decorations[i + yOffset][j + xOffset];
 				decorationsLookup[decorationNumber].draw(bufferCanvas, j * TILE_SIZE, i * TILE_SIZE);
 			}
 		}
@@ -173,5 +203,21 @@ public class Level {
 	public boolean tileAtIndexIsSolid(int x, int y) {
 		int tileNumber = decorations[y][x];
 		return tileNumber == 9;
+	}
+	
+	public int getScreenTop() {
+		return yOffset;
+	}
+	
+	public int getScreenLeft() {
+		return xOffset;
+	}
+	
+	public int getScreenRight() {
+		return yOffset + rows;
+	}
+	
+	public int getScreenBottom() {
+		return yOffset + columns;
 	}
 }
