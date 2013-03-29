@@ -41,11 +41,8 @@ public class Level {
 	public Level(Context context) {
 		this.context = context;
 		
-		DisplayMetrics metrics = new DisplayMetrics();
-		((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
-		
-		this.width = metrics.widthPixels / 2;
-		this.height = metrics.heightPixels / 2;
+		this.width = Main.screen_width / 2;
+		this.height = Main.screen_height / 2;
 		this.rows = height / TILE_SIZE;
 		this.columns = width / TILE_SIZE;
 		

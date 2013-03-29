@@ -140,7 +140,7 @@ public class Player extends AnimatedGameObject {
 	
 	@Override
 	public void draw(Canvas canvas, Level level) {
-		canvas.drawBitmap(sprite.getImage(), x - (level.getScreenLeft() * Level.TILE_SIZE), y - (level.getScreenTop() * Level.TILE_SIZE) - 2, null);
+		canvas.drawBitmap(sprite.getImage(), x - (level.getScreenLeft() * Level.TILE_SIZE), y - (level.getScreenTop() * Level.TILE_SIZE), null);
 	}
 	
 	public void moveUp() {
