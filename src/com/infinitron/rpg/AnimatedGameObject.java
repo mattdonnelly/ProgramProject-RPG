@@ -37,4 +37,8 @@ public class AnimatedGameObject extends GameObject {
 	protected void doneFrame() {
 		
 	}
+	
+	protected void resetTimer() {
+		runningTime = 0;
+	}
 }
