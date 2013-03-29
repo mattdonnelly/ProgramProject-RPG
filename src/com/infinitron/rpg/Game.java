@@ -1,6 +1,5 @@
 package com.infinitron.rpg;
 
-import java.util.Random;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,9 +11,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
 	private SurfaceHolder surfaceHolder;
 	private GameThread gameThread;
-	private Random randNum = new Random();
-	private Monster[] monsterCollection = new Monster[10];//Would then call createMonsters to fill array
-	public Monster[] levelMonsters = new Monster[4];// filled in init() by randomly picking from monsterCollection
 	private Item[][] itemCollection = new Item[3][10];//Would then call createItems to fill array
 	
 	/* TESTING SPRITE RENDERING */
@@ -36,49 +32,50 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	
 	public static Player player;
 	public static Level level;
+	public static Monster monsters[] = new Monster[10];
 	
 	public Input input = new Input(Main.screen_width, Main.screen_height);
-	
-	private int x_screen_pos, y_screen_pos = 0;
 
 	protected int fps = 0;
 
 	public Game(Context context) {
 		super(context);
-		init();
+		init(context);
+	}
+
+	public void init(Context context) {
+		surfaceHolder = getHolder();
+		surfaceHolder.addCallback(this);
+		setFocusable(true);
+		
 		level = new Level(context);
 		
 		GridSpriteSheet p1 = new GridSpriteSheet(BitmapFactory.decodeResource(context.getResources(), R.drawable.player16x18),16,18);
 		
-		Sprite[][] playerSprites = {
-				{new Sprite(p1, 0,0), new Sprite(p1, 0,1)},
-				{new Sprite(p1, 1,0), new Sprite(p1, 1,1)},
-				{new Sprite(p1, 2,0), new Sprite(p1, 2,1)},
-				{new Sprite(p1, 3,0), new Sprite(p1, 3,1)},
-				{new Sprite(p1, 4,0), new Sprite(p1, 4,1)},
-				{new Sprite(p1, 5,0), new Sprite(p1, 5,1)},
-				{new Sprite(p1, 6,0), new Sprite(p1, 6,1)},
-				{new Sprite(p1, 7,0), new Sprite(p1, 7,1)}
-				};
+		Sprite[][] playerSprites = new Sprite[p1.rows()][p1.columns()];
+		for (int i = 0; i < p1.rows(); i++) {
+			for (int j = 0; j < p1.columns(); j++) {
+				playerSprites[i][j] = new Sprite(p1, i, j);
+			}
+		}
 		
 		player = new Player("Elaine", playerSprites, 4, 4, 500, 200, GameThread.CYCLE_TIME);
-	}
-
-	public void init() {
-		surfaceHolder = getHolder();
-		surfaceHolder.addCallback(this);
-		setFocusable(true);
-
-		gameThread = new GameThread(this);
 		
-		makeMonsterSprites();
-		/* Get monsters to place in level. Done by randomly selecting monsters from the monsterCollection and
-		 * placing them in the array levelMonsters. Selects items from monster array at random with
-		 * max monster being array length exclusive. Only get four monsters for now.
-		 */
-		for(int i = 0; i < levelMonsters.length; i++){
-			levelMonsters[i] = monsterCollection[randNum.nextInt(monsterCollection.length)];
-		}
+		Sprite treeSprite = new Sprite(BitmapFactory.decodeResource(getResources(), R.drawable.tree));
+		Sprite rockSprite = new Sprite(BitmapFactory.decodeResource(getResources(), R.drawable.rock));
+				
+		monsters[0] = new Monster("Tree", treeSprite, 13, 40, 20, 20, 0, 0);
+		monsters[1] = new Monster("Tree", treeSprite, 38, 37, 20, 20, 0, 0);
+		monsters[2] = new Monster("Tree", treeSprite, 18, 28, 20, 20, 0, 0);
+		monsters[3] = new Monster("Tree", treeSprite, 7,  38, 20, 20, 0, 0);
+		monsters[4] = new Monster("Tree", treeSprite, 8,  29, 20, 20, 0, 0);
+		monsters[5] = new Monster("Rock", rockSprite, 38, 6,  40, 40, 0, 0);
+		monsters[6] = new Monster("Rock", rockSprite, 20, 20, 40, 40, 0, 0);
+		monsters[7] = new Monster("Rock", rockSprite, 18, 12, 40, 40, 0, 0);
+		monsters[8] = new Monster("Rock", rockSprite, 5,  8,  40, 40, 0, 0);
+		monsters[9] = new Monster("Rock", rockSprite, 8,  14, 40, 40, 0, 0);
+		
+		gameThread = new GameThread(this);
 	}
 
 	public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -108,9 +105,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	public void draw(Canvas canvas) {
 		level.draw(canvas);
 		
-		for(int i = 0; i < levelMonsters.length; i++){
-			if(levelMonsters[i] != null){
-				levelMonsters[i].draw(canvas, level);	//Draws all alive monsters in the level
+		for(int i = 0; i < monsters.length; i++){
+			if(monsters[i] != null){
+				monsters[i].draw(canvas, level);	//Draws all alive monsters in the level
 			}
 		}
 		
@@ -122,59 +119,58 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		animatedElaineObject.update();
 		player.update();
 		level.update(player);
-		for(int i = 0; i < levelMonsters.length; i++){
-			if(levelMonsters[i] != null){
-				levelMonsters[i].update();
+		
+		if (input.up) {
+			Monster m = getMonsterAtTile(player.xTile(), player.yTile()-1);
+			if (m  != null)
+				player.attack(m, Player.State.UP);
+			else
+				player.moveUp();
+		} else if (input.down) {
+			Monster m = getMonsterAtTile(player.xTile(), player.yTile()+1);
+			if (m  != null)
+				player.attack(m, Player.State.DOWN);
+			else
+				player.moveDown();
+		} else if (input.left) {
+			Monster m = getMonsterAtTile(player.xTile()-1, player.yTile());
+			if (m  != null)
+				player.attack(m, Player.State.LEFT);
+			else
+				player.moveLeft();
+		} else if (input.right) {
+			Monster m = getMonsterAtTile(player.xTile()+1, player.yTile());
+			if (m  != null)
+				player.attack(m, Player.State.RIGHT);
+			else
+				player.moveRight();
+		}
+		
+		for (int i = 0; i < monsters.length; i++){
+			if (monsters[i] != null){
+				monsters[i].update();
 				// Delete dead monsters by setting them to NULL
-				if(((Monster) levelMonsters[i]).getHp() <= 0){
-					levelMonsters[i] = null;
+				if (((Monster)monsters[i]).getHp() <= 0){
+					monsters[i] = null;
+				}
+			}
+		}
+	}
+	
+	public Monster getMonsterAtTile(int x, int y) {
+		
+		for (int i = 0; i < monsters.length; i++) {
+			Monster temp = monsters[i];
+			if (temp != null) {
+				if (temp.xTile() == x && temp.yTile() == y) {
+					return temp;
 				}
 			}
 		}
 		
-		if (input.up) {
-			player.moveUp();
-			//y_screen_pos --;
-		} else if (input.down) {
-			player.moveDown();
-			//y_screen_pos ++;
-		} else if (input.left) {
-			player.moveLeft();
-			//x_screen_pos --;
-		} else if (input.right) {
-			player.moveRight();
-			//x_screen_pos ++;
-		}
-	}
-
-	//Replaces Monster Sprite Rendering by instead doing it for several monsters, chosen from the levelMonsters array
-	//NOTE parameters are incorrect, have chosen temporary values
-	public void makeMonsterSprites(){
-		GridSpriteSheet monsterSheet = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.monster_inc_smaller), 25, 25);
-		Sprite[] animatedMonsterSprites = {new Sprite(monsterSheet, 0), new Sprite(monsterSheet, 1),new Sprite(monsterSheet, 2),
-										   new Sprite(monsterSheet, 3), new Sprite(monsterSheet, 4)};
-		createMonsters(animatedMonsterSprites);
+		return null;
 	}
 	
-	// 1d array full of monster objects 
-	//Monster extends GameObject and hence has the following attributes: String name, Sprite sprite, int xPos, int yPos, int _max_hp, int _hp, int _attack, int _defense
-	//The following method will take the array monster collection and manually fill it with monsters
-	public void createMonsters(Sprite[] sprite){
-										  //Name        //Sprite 	//xPos	//yPos	//maxHp	//hp	//att	//def 	//updateTime 	//frameTime
-		monsterCollection[0] = new Monster("Rat",		sprite,		5,		5,		1,		1,		1,		1, 		100, 			GameThread.CYCLE_TIME);
-		monsterCollection[1] = new Monster("Kobold",	sprite,		10,		30,		5,		5,		1,		2, 		100, 			GameThread.CYCLE_TIME);
-		monsterCollection[2] = new Monster("Goblin",	sprite,		20,		60,		5,		5,		2,		2, 		100, 			GameThread.CYCLE_TIME);
-		monsterCollection[3] = new Monster("Zombie",	sprite,		30,		90,		7,		7,		2,		3, 		100, 			GameThread.CYCLE_TIME);
-		monsterCollection[4] = new Monster("Wolf",		sprite,		40,		120,	8,		8,		4,		3, 		100,			GameThread.CYCLE_TIME);
-		monsterCollection[5] = new Monster("Gnome",		sprite,		50,		150,	3,		3,		6,		1, 		100,		 	GameThread.CYCLE_TIME);
-		monsterCollection[6] = new Monster("Orc",		sprite,		60,		180,	8,		8,		3,		4, 		100, 			GameThread.CYCLE_TIME);
-		monsterCollection[7] = new Monster("Skeleton",	sprite,		70,		210,	4,		4,		2,		3, 		100, 			GameThread.CYCLE_TIME);
-		monsterCollection[8] = new Monster("Spider",	sprite,		80,		240,	2,		2,		1,		1, 		100, 			GameThread.CYCLE_TIME);
-		monsterCollection[9] = new Monster("Vampire",	sprite,		90,		270,	9,		9,		5,		5, 		100, 			GameThread.CYCLE_TIME);
-																//monsterCollection[0].getXPos() , monsterCollection[0].getYPos()
-																//was trying to get XPos and YPos of NULL objects
-	}
-
 	// 2d array of items, where the each row is a different type of item and the each column represents a different object of type item where the greater
 	// the column index the greater the item level
 	//Attributes for Items: 	String _name, Sprite _sprite, int _xPos, int _yPos, int _level, int _state, int _type
@@ -196,16 +192,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		itemCollection[2][0] = new Potion("Minor Potion",	itemSprites[2][0],	itemCollection[2][0].getXPos(),	itemCollection[1][0].getYPos(),	1,		0,		3,	10);
 		itemCollection[2][1] = new Potion("Small Potion",	itemSprites[2][1],	itemCollection[2][1].getXPos(),	itemCollection[1][1].getYPos(),	3,		0,		3,	30);
 		itemCollection[2][2] = new Potion("Medium Potion",	itemSprites[2][2],	itemCollection[2][2].getXPos(),	itemCollection[1][2].getYPos(),	5,		0,		3,	50);
-	}
-
-	//NOTE: use when only a linear section of monsterCollection needs to be copied
-	//A method which takes two position markers and a length parameter. srcPos specifies the start point of
-	//the array monsterCollection from which to start copying. destPos specifies the start position of the
-	//return array. length specifies the number of elements to copy over
-	public Monster[] getSimpleMonsterRange(int srcPos, int destPos, int length){
-		Monster[] result = new Monster[length+1];//Must be length + 1 to avoid out of bounds
-		System.arraycopy(monsterCollection, srcPos, result, destPos, length);
-		return result;
 	}
 	
 	//A method which returns an array of items which can consist of weapons,armor,potions or all

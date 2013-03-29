@@ -21,6 +21,9 @@ public class Player extends AnimatedGameObject {
 	private int lastX, lastY;
 	private Sprite[][] playerSprites;
 	private int moveAdjust;
+	private boolean attacking, canAttackAgain;
+	
+	private static final int DAMAGE_MODIFIER = 5;
 	
 	public Player(String name, Sprite[][] sprites, int xTile, int yTile, int _max_hp, int updateTime, int frameTime) {
 		super(name, sprites[0], xTile * Level.TILE_SIZE, yTile * Level.TILE_SIZE, updateTime, frameTime);
@@ -33,11 +36,25 @@ public class Player extends AnimatedGameObject {
 		this.lastY = this.y;
 		this.state = Player.State.DOWN;
 		this.moveAdjust = Level.TILE_SIZE;
+		this.attacking = false;
+		this.canAttackAgain = true;
 	}
 	
 	@Override
 	public void update() {
-		if (idle) {
+		if (attacking) {
+			if (this.state == Player.State.UP) {
+				this.sprite = playerSprites[4][0];
+			} else if (this.state == Player.State.RIGHT) {
+				this.sprite = playerSprites[5][0];
+			} else if (this.state == Player.State.DOWN) {
+				this.sprite = playerSprites[6][0];
+			} else if (this.state == Player.State.LEFT) {
+				this.sprite = playerSprites[7][0];
+			}
+			
+			super.update();
+		} else if (idle) {
 			if (this.state == Player.State.UP) {
 				this.sprite = playerSprites[4][1];
 			} else if (this.state == Player.State.RIGHT) {
@@ -47,6 +64,13 @@ public class Player extends AnimatedGameObject {
 			} else if (this.state == Player.State.LEFT) {
 				this.sprite = playerSprites[7][1];
 			}
+			
+			if (runningTime > updateTime) {
+				runningTime = 0;				
+				doneFrame();
+			}
+			
+			runningTime += frameTime;
 		} else {
 			if (this.state == Player.State.UP) {
 				this.sprites = playerSprites[0];
@@ -90,6 +114,28 @@ public class Player extends AnimatedGameObject {
 			}
 			
 			super.update();
+		}
+	}
+	
+	@Override
+	protected void doneFrame() {
+		if (attacking) {
+			monster.takeDamage(DAMAGE_MODIFIER);
+			monster = null;
+			attacking = false;
+			canAttackAgain = false;
+			
+			if (this.state == Player.State.UP) {
+				this.sprite = playerSprites[4][1];
+			} else if (this.state == Player.State.RIGHT) {
+				this.sprite = playerSprites[5][1];
+			} else if (this.state == Player.State.DOWN) {
+				this.sprite = playerSprites[6][1];
+			} else if (this.state == Player.State.LEFT) {
+				this.sprite = playerSprites[7][1];
+			}
+		} else if (!attacking) {
+			canAttackAgain = true;
 		}
 	}
 	
@@ -153,12 +199,12 @@ public class Player extends AnimatedGameObject {
 	//Get players weapon damage and monster's defense
 	//Calculate damage, ensuring that it is always at least 1 no matter
 	//how high the monster's defense and pass this to the monster class
-	public void attack(){
-		int damage = weapon.getDamage();
-		int defense = monster.getDefense();
-		int result = damage - defense;
-		if(result <= 0)result = 1;
-		monster.takeDamage(result);
+	public void attack(Monster monster, Player.State state) {
+		if (!attacking && canAttackAgain) {
+			this.state = state;
+			this.monster = monster;
+			attacking = true;
+		}
 	}
 	
 	public void takeDamage(int damage){
@@ -194,6 +240,14 @@ public class Player extends AnimatedGameObject {
 
 	public Item[] getInventory(){
 		return inventory;
+	}
+	
+	public int xTile() {
+		return xTile;
+	}
+	
+	public int yTile() {
+		return yTile;
 	}
 	
 	public void setInventory(Item[] _inventory){

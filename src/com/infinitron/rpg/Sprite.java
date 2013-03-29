@@ -10,6 +10,10 @@ public class Sprite {
 
 	private Bitmap bitmap;
 	
+	public Sprite(Bitmap b) {
+		this.bitmap = b;
+	}
+	
 	public Sprite(SpriteSheet spriteSheet, int x, int y, int width, int height) {
 		this.bitmap = spriteSheet.cut(x, y, width, height);
 	}

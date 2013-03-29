@@ -4,9 +4,9 @@ public class AnimatedGameObject extends GameObject {
 
 	protected Sprite[] sprites;
 	private int currentSprite;
-	private final int updateTime;
-	private final int frameTime;
-	private int runningTime;
+	protected final int updateTime;
+	protected final int frameTime;
+	protected int runningTime;
 	
 	public AnimatedGameObject(String name, Sprite[] sprites, int x, int y, int updateTime, int frameTime) {
 		super(name, sprites[0], x, y);
@@ -27,8 +27,14 @@ public class AnimatedGameObject extends GameObject {
 				currentSprite = 0;
 			
 			this.sprite = sprites[currentSprite];
+			
+			doneFrame();
 		}
 		
 		runningTime += frameTime;
+	}
+	
+	protected void doneFrame() {
+		
 	}
 }

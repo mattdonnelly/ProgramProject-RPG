@@ -4,31 +4,27 @@ package com.infinitron.rpg;
  * a certain amount of health along with values for how strong
  * they are and how difficult they are to kill
  */
-public class Monster extends AnimatedGameObject{
+public class Monster extends GameObject {
 	
 	private final int max_hp;
 	private int hp;
 	private final int attack;
 	private final int defense;
-	private Player player; 
-	private int velocity = 1;
+	private final int xTile, yTile;
 	
-	public Monster(String name, Sprite[] sprite, int xPos, int yPos, int _max_hp, int _hp, int _attack, int _defense, int updateTime, int frameTime){
-		super(name, sprite, xPos, yPos, updateTime, frameTime);
-		max_hp = _max_hp;
-		hp = _hp;
-		attack = _attack;
-		defense = _defense;
+	public Monster(String name, Sprite sprite, int xTile, int yTile, int _max_hp, int _hp, int _attack, int _defense) {
+		super(name, sprite, xTile * Level.TILE_SIZE, yTile * Level.TILE_SIZE);
+		this.max_hp = _max_hp;
+		this.hp = _hp;
+		this.attack = _attack;
+		this.defense = _defense;
+		this.xTile = xTile;
+		this.yTile = yTile;
 	}
 
 	@Override
 	public void update(){
 		super.update();
-		
-		this.x += velocity;
-		if(this.x < 0 || this.x > 225){
-			velocity = -velocity;
-		}
 	}
 	
 	/*
@@ -36,7 +32,7 @@ public class Monster extends AnimatedGameObject{
 	 * Calculate damage, ensuring that it is always at least 1 no matter
 	 * how high the player's defense and pass this to the player class
 	 */
-	public void attack(){
+	public void attack(Player player){
 		int result = attack - player.getDefense();
 		if(result <= 0){
 			result = 1;
@@ -84,5 +80,13 @@ public class Monster extends AnimatedGameObject{
 
 	public int getMax_hp() {
 		return max_hp;
+	}
+	
+	public int xTile() {
+		return xTile;
+	}
+	
+	public int yTile() {
+		return yTile;
 	}
 }
