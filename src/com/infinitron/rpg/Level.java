@@ -17,6 +17,7 @@ import android.view.WindowManager;
 public class Level {
 
 	public static final int TILE_SIZE = 16;
+	public static final int EMPTY_DECORATION = 31;
 	
 	private Context context;
 		
@@ -51,53 +52,22 @@ public class Level {
 		GridSpriteSheet terrainSheet = new GridSpriteSheet(BitmapFactory.decodeResource(context.getResources(), R.drawable.terrain), TILE_SIZE, TILE_SIZE);
 		GridSpriteSheet decorationsSheet = new GridSpriteSheet(BitmapFactory.decodeResource(context.getResources(), R.drawable.decorations), TILE_SIZE, TILE_SIZE);
 		
-		this.tileLookup = new Tile[]{ new Tile(new Sprite(terrainSheet, 0, 0), false), 
-									  new Tile(new Sprite(terrainSheet, 0, 1), false),
-									  new Tile(new Sprite(terrainSheet, 0, 2), false),
-									  new Tile(new Sprite(terrainSheet, 0, 3), false),
-									  new Tile(new Sprite(terrainSheet, 0, 4), false),
-									  new Tile(new Sprite(terrainSheet, 1, 0), false), 
-									  new Tile(new Sprite(terrainSheet, 1, 1), false),
-									  new Tile(new Sprite(terrainSheet, 1, 2), false),
-									  new Tile(new Sprite(terrainSheet, 1, 3), false),
-									  new Tile(new Sprite(terrainSheet, 1, 4), false),
-									  new Tile(new Sprite(terrainSheet, 2, 0), false), 
-									  new Tile(new Sprite(terrainSheet, 2, 1), false),
-									  new Tile(new Sprite(terrainSheet, 2, 2), false),
-									  new Tile(new Sprite(terrainSheet, 2, 3), false),
-									  new Tile(new Sprite(terrainSheet, 2, 4), false),
-									  new Tile(new Sprite(terrainSheet, 3, 0), false), 
-									  new Tile(new Sprite(terrainSheet, 3, 1), false),
-									  new Tile(new Sprite(terrainSheet, 3, 2), false),
-									  new Tile(new Sprite(terrainSheet, 3, 3), false) };
+		this.tileLookup = new Tile[terrainSheet.size()];
+		for (int i = 0; i < terrainSheet.rows(); i++) {
+			for (int j = 0; j < terrainSheet.columns(); j++) {
+				this.tileLookup[(i * terrainSheet.columns()) + j] = new Tile(new Sprite(terrainSheet, i, j), false);
+			}
+		}
 		
-		this.decorationsLookup = new Tile[]{ new Tile(new Sprite(decorationsSheet, 0, 0), true),
-											 new Tile(new Sprite(decorationsSheet, 0, 1), true),
-											 new Tile(new Sprite(decorationsSheet, 0, 2), true),
-											 new Tile(new Sprite(decorationsSheet, 0, 3), true),
-											 new Tile(new Sprite(decorationsSheet, 0, 4), true),
-											 new Tile(new Sprite(decorationsSheet, 0, 5), true),
-											 new Tile(new Sprite(decorationsSheet, 0, 6), true),
-											 new Tile(new Sprite(decorationsSheet, 0, 7), true),
-											 new Tile(new Sprite(decorationsSheet, 1, 0), true),
-											 new Tile(new Sprite(decorationsSheet, 1, 1), true),
-											 new Tile(new Sprite(decorationsSheet, 1, 2), true),
-											 new Tile(new Sprite(decorationsSheet, 1, 3), true),
-											 new Tile(new Sprite(decorationsSheet, 1, 4), true),
-											 new Tile(new Sprite(decorationsSheet, 1, 5), true),
-											 new Tile(new Sprite(decorationsSheet, 1, 6), true),
-											 new Tile(new Sprite(decorationsSheet, 1, 7), true),
-											 new Tile(new Sprite(decorationsSheet, 2, 0), true),
-											 new Tile(new Sprite(decorationsSheet, 2, 1), true),
-											 new Tile(new Sprite(decorationsSheet, 2, 2), true),
-											 new Tile(new Sprite(decorationsSheet, 2, 3), true),
-											 new Tile(new Sprite(decorationsSheet, 2, 4), true),
-											 new Tile(new Sprite(decorationsSheet, 2, 5), true),
-											 new Tile(new Sprite(decorationsSheet, 2, 6), true),
-											 new Tile(new Sprite(decorationsSheet, 2, 7), true),
-											 new Tile(new Sprite(decorationsSheet, 3, 0), true),
-											 new Tile(new Sprite(decorationsSheet, 3, 1), true),
-											 new Tile(new Sprite(decorationsSheet, 3, 2), true) };
+		this.decorationsLookup = new Tile[decorationsSheet.size()];
+		for (int i = 0; i < decorationsSheet.rows(); i++) {
+			for (int j = 0; j < decorationsSheet.columns(); j++) {
+				if ((i * decorationsSheet.columns()) + j == EMPTY_DECORATION)
+					this.decorationsLookup[(i * decorationsSheet.columns()) + j] = new Tile(new Sprite(decorationsSheet, i, j), false);
+				else
+					this.decorationsLookup[(i * decorationsSheet.columns()) + j] = new Tile(new Sprite(decorationsSheet, i, j), true);
+			}
+		}
 		
 		this.terrain = this.readFile("Terrain.txt");
 		this.decorations = this.readFile("Decorations.txt");
@@ -201,7 +171,7 @@ public class Level {
 	
 	public boolean tileAtIndexIsSolid(int x, int y) {
 		int tileNumber = decorations[y][x];
-		return tileNumber == 9;
+		return tileNumber != EMPTY_DECORATION;
 	}
 	
 	public int getScreenTop() {
