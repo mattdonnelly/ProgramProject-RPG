@@ -89,7 +89,6 @@ public class GameThread extends Thread {
 					canvas.drawColor(Color.MAGENTA);
 					this.game.draw(canvas);
 					this.drawFPS(canvas);
-					this.game.updateNPC(canvas);
 					
 					final long endTime = System.currentTimeMillis() - beginTime;
 					

@@ -13,23 +13,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	private GameThread gameThread;
 	private Item[][] itemCollection = new Item[3][10];//Would then call createItems to fill array
 	
-	/* TESTING SPRITE RENDERING */
-	
-	// Test sprite rendering
-	public GridSpriteSheet elaine = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.walk_elaine), 30, 47);
-	public Sprite elaineSprite = new Sprite(elaine, 2);
-	public GameObject elaineObject = new GameObject("Elaine", elaineSprite, 20, 20);
-
-	// NPC sprite/object Test
-	public GridSpriteSheet speech_bubble = new GridSpriteSheet(BitmapFactory.decodeResource(getResources(), R.drawable.speech_bubble),47, 38);	
-	public Sprite elaine_talk = new Sprite(speech_bubble,0);
-	public Sprite[] npc = {new Sprite(elaine, 0)};	// She's good and bad :O
-	public NPC elaineNPC = new NPC("elaineNPC", npc[0], 100, 200, "Hi, my name is Elaine", elaine_talk, true);
-    
-	// Animated Game Object Test
-	public Sprite[] animatedElaineSprites = {new Sprite(elaine, 0), new Sprite(elaine, 1), new Sprite(elaine, 2), new Sprite(elaine, 3), new Sprite(elaine, 4)};
-	public AnimatedGameObject animatedElaineObject = new AnimatedGameObject("Elaine", animatedElaineSprites, 70, 70, 100, GameThread.CYCLE_TIME);
-	
 	public static Player player;
 	public static Level level;
 	public static Monster monsters[] = new Monster[10];
@@ -111,12 +94,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 			}
 		}
 		
-		animatedElaineObject.draw(canvas, level);
 		player.draw(canvas, level);
 	}
 
 	public void update() {
-		animatedElaineObject.update();
 		player.update();
 		level.update(player);
 		
@@ -226,9 +207,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		Item[][] result = new Item[length + 1][3];// SECOND ARRAY BOUND MUST BE SAME AS ITEMCOLLECTION
 		System.arraycopy(itemCollection, srcPos, result, destPos, length);
 		return result;
-	}
-	public void updateNPC(Canvas canvas) {
-		elaineNPC.update(canvas);
 	}
 	
     @Override

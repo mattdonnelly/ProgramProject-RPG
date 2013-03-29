@@ -13,7 +13,6 @@ public class Player extends AnimatedGameObject {
 	private Item[] inventory;
 	private Potion potion;
 	private Monster monster;
-	private Weapon weapon;
 	private Armor armor;
 	private Player.State state;
 	private boolean idle;
