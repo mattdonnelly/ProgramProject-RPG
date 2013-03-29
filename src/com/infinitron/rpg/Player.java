@@ -1,7 +1,6 @@
 package com.infinitron.rpg;
 
 import android.graphics.Canvas;
-import android.util.Log;
 
 public class Player extends AnimatedGameObject {
 
@@ -94,14 +93,13 @@ public class Player extends AnimatedGameObject {
 		}
 	}
 	
-	@Override
 	public void draw(Canvas canvas, Level level) {
 		canvas.drawBitmap(sprite.getImage(), x - (level.getScreenLeft() * Level.TILE_SIZE), y - (level.getScreenTop() * Level.TILE_SIZE) - 2, null);
 	}
 	
 	public void moveUp() {
 		if (idle) {
-			this.sprite = playerSprites[4][1];
+			//this.sprite = playerSprites[4][1];
 			state = Player.State.UP;
 
 			if (Game.level.tileAtIndexIsSolid(this.xTile, this.yTile-1)) {
@@ -114,7 +112,7 @@ public class Player extends AnimatedGameObject {
 	
 	public void moveRight() {
 		if (idle) {
-			this.sprite = playerSprites[5][1];
+			//this.sprite = playerSprites[5][1];
 			state = Player.State.RIGHT;
 			
 			if (Game.level.tileAtIndexIsSolid(this.xTile+1, this.yTile)) {
@@ -127,7 +125,7 @@ public class Player extends AnimatedGameObject {
 
 	public void moveDown() {
 		if (idle) {
-			this.sprite = playerSprites[6][1];
+			//this.sprite = playerSprites[6][1];
 			state = Player.State.DOWN;
 			
 			if (Game.level.tileAtIndexIsSolid(this.xTile, this.yTile+1)) {
@@ -140,7 +138,7 @@ public class Player extends AnimatedGameObject {
 	
 	public void moveLeft() {
 		if (idle) {
-			this.sprite = playerSprites[7][1];
+			//this.sprite = playerSprites[7][1];
 			state = Player.State.LEFT;
 			
 			if (Game.level.tileAtIndexIsSolid(this.xTile-1, this.yTile)) {

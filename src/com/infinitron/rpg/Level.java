@@ -12,7 +12,6 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
 
 public class Level {

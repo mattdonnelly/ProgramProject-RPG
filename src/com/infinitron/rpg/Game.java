@@ -1,8 +1,5 @@
 package com.infinitron.rpg;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Random;
 import android.content.Context;
 import android.graphics.BitmapFactory;
