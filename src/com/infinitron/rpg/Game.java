@@ -16,6 +16,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 	public static Player player;
 	public static Level level;
 	public static Monster monsters[] = new Monster[10];
+	public static NPC npc1;
+	public static NPC npc2;
+	public static NPC npc3;
 	
 	public Input input = new Input(Main.screen_width, Main.screen_height);
 
@@ -58,6 +61,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		monsters[8] = new Monster("Rock", rockSprite, 5,  8,  40, 40, 0, 0);
 		monsters[9] = new Monster("Rock", rockSprite, 8,  14, 40, 40, 0, 0);
 		
+		Sprite npcSprite = new Sprite(BitmapFactory.decodeResource(getResources(), R.drawable.npc_sprite));
+		npc1 = new NPC("NPC1", npcSprite, 10, 30, "Go hit a rock!");
+		npc2 = new NPC("NPC2", npcSprite, 70, 280, "This way quickly! -->");
+		npc3 = new NPC("NPC3", npcSprite, 300, 150, "Many lands to explore!");
+		
 		gameThread = new GameThread(this);
 	}
 
@@ -95,10 +103,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 		}
 		
 		player.draw(canvas, level);
+		
+		npc1.draw(canvas, level);
+		npc2.draw(canvas, level);
+		npc3.draw(canvas, level);
 	}
 
 	public void update() {
 		player.update();
+		npc1.update(level);
+		npc2.update(level);
+		npc3.update(level);
 		level.update(player);
 		
 		if (input.up) {
